@@ -54,6 +54,17 @@ function migrate() {
 	echo ""
 }
 
+function shell() {
+
+    echo ""
+	echo "Running interactive shell"
+    python manage.py shell
+}
+
+
+
+
+
 menu(){
 echo "
 -----------------
@@ -62,6 +73,7 @@ echo "
 3) Kill Server
 4) Make Migrations
 5) Migrate
+6) Shell
 
 0) Exit
 -----------------
@@ -73,7 +85,8 @@ Choose an option: "
 	        3) kill_server ; menu ;;
 	        4) make_migrations ; menu ;;
 	        5) migrate ; menu ;;
-		0) exit 0 ;;
+	        6) shell ; menu ;;
+	        0) exit 0 ;;
         esac
 }
 
