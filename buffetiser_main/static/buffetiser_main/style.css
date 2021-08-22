@@ -6,11 +6,11 @@
 
 
 html, body {
-  display: flex;
-  height: 100%;
-  width: 100%;
+    display: flex;
+    height: 100%;
+    width: 100%;
+    margin: 0px;
 }
-
 
 .left {
     display: block;
@@ -29,7 +29,6 @@ html, body {
     color: white;
 }
 
-/* Add a background color on hover */
 .left button:hover {
     background-color: var(--COLOUR1);
 }
@@ -68,6 +67,30 @@ html, body {
     border-width: 1px;
     border-color: white;
 }
+
+.pull-left {
+    margin-left: -10px;
+    margin-right: 10px;
+}
+
+.panel-title {
+    margin-left: 10px;
+}
+
+.panel-body {
+    background-color: black;
+    color: white;
+}
+
+
+
+
+
+
+
+
+
+
 
 
 #bottom {

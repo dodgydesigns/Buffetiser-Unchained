@@ -1,41 +1,130 @@
 <!DOCTYPE html>
+
+
+
+{#<script type="text/javascript" src="{{ STATIC_URL }} /static/jquery-3.6.0.js"></script>#}
+{#<script type="text/javascript" src="{{ STATIC_URL }} /static/bootstrap-5.0.2/js/bootstrap.bundle.min.js"></script>#}
+<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="https://netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+{% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'buffetiser_main/style.css' %}">
+<script>
+    $(document).ready(function() {
+
+        (function($, window, document){
+            var panelSelector = '[data-perform="panel-collapse"]';
+
+            $(panelSelector).each(function() {
+            var $this = $(this),
+            parent = $this.closest('.panel'),
+            wrapper = parent.find('.panel-wrapper'),
+            collapseOpts = {toggle: false};
+
+            if( ! wrapper.length) {
+            wrapper = parent.children('.panel-heading').nextAll()
+            .wrapAll('<div/>')
+            .parent()
+            .addClass('panel-wrapper');
+            collapseOpts = {};
+            }
+            wrapper.collapse(collapseOpts).on('hide.bs.collapse', function() {
+                $this.children('i').removeClass('fa-minus').addClass('fa-plus');
+                }).on('show.bs.collapse', function() {
+                $this.children('i').removeClass('fa-plus').addClass('fa-minus');
+                });
+            });
+            $(document).on('click', panelSelector, function (e) {
+                e.preventDefault();
+                var parent = $(this).closest('.panel');
+                var wrapper = parent.find('.panel-wrapper');
+                wrapper.collapse('toggle');
+            });
+        }(jQuery, window, document));
+
+
+        (function($, window, document){
+            var panelSelector = '[data-perform="panel-dismiss"]';
+            $(document).on('click', panelSelector, function (e) {
+                e.preventDefault();
+                var parent = $(this).closest('.panel');
+                removeElement();
+
+                function removeElement() {
+                    var col = parent.parent();
+                        parent.remove();
+                        col.filter(function() {
+                        var el = $(this);
+                        return (el.is('[class*="col-"]') && el.children('*').length === 0);
+                    }).remove();
+                }
+            });
+        }(jQuery, window, document));
+    });
+</script>
+
+
+
+
+
+
+
+
+
+
 <html>
     <head>
         <meta charset="utf-8">
         <title>Buffetiser Unchained</title>
     </head>
     <body>
-        {% load static %}
-        <link rel="stylesheet" type="text/css" href="{% static 'buffetiser_main/style.css' %}">
-
-
         <div class="left">
-            <button><a href="/admin"></a>Admin</button>
-            <button><a href="/help"></a>Help</button>
-            <button><a href="/config"></a>Config</button>
-            <button><a href="/config">Live</button>
-            <button><a href="/purchase"></a>New Purchase</button>
-            <button><a href="/config">New Sale</button>
-            <button><a href="/config">Quit</button>
+            <a href="/admin"><button>Admin</button></a>
+            <a href="/help"><button>Help</button></a>
+            <a href="/config"><button>Config</button></a>
+            <a href="/config"><button>Live</button></a>
+            <a href="/purchase"><button>New Purchase</button></a>
+            <a href="/config"><button>New Sale</button></a>
+            <a href="/config"><button>Quit</button></a>
         </div>
 
         <div id="right">
-
             <div id="top">
                 {% if investment_list %}
-                    <ul>
                         {% for investment in investment_list %}
-                            <li><a href="/{{ investment.symbol }}/">{{ investment.name }}</a></li>
+                            <div class="panel panel-primary">
+                                <div class="panel-heading" >                                    <!-- title bar -->
+                                    <h4 class="panel-title" data-collapsed="true">
+                                        {{ investment.symbol }} ({{ investment.name }})
+                                      <div class="pull-left" >
+                                          <a href="#"
+                                             data-perform="panel-collapse"
+                                             data-toggle="collapse"
+                                             class="btn btn-primary btn-xs pull-right" >
+                                              <i class="fa fa-minus"></i>
+                                          </a>
+                                      </div>
+                                    </h4>
+                                </div>
+                                    <div class="panel-wrapper collapse in">
+                                    <div class="panel-body" style="margin-bottom: -20px;">
+                                        hi
+                                        <img src="">
+                                    </div>                                                      <!-- panel content -->
+                                </div>
+                            </div>
                         {% endfor %}
-                    </ul>
                 {% else %}
                     <p>No investments are available.</p>
                 {% endif %}
             </div>
 
-            <div id="bottom">
+
+
+        <div id="bottom">
                 bottom
-            </div>
+        </div>
 
 
         </div>
