@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>New Purchase</title>
+    </head>
+    <body class="new_purchase">
+    <h1>New Purchase</h1>
+
+        <form action="add_purchase" method="post">
+        {% csrf_token %}
+        <fieldset>
+            <label>Type</label><input type="text" id="type" name="type" required>
+            <label>Symbol</label><input type="text" id="symbol" name="symbol" required>
+            <label>Name</label><input type="text" id="name" name="name" required>
+            <label>Exchange</label><input type="text" id="exchange" name="exchange" required>
+            <label>Platform</label><input type="text" id="platform" name="platform" required>
+            <label>Currency</label><input type="text" id="currency" name="currency" required>
+            <label>Units</label><input type="text" id="units" name="units" required>
+            <label>Price</label><input type="text" id="price" name="price" required>
+            <label>Fee</label><input type="text" id="fee" name="fee" required>
+            <label>Date</label><input type="date" id="date" name="date" required>
+
+            <input type="submit" value="Add">
+        </fieldset>
+        </form>
+
+    </body>
+</html>

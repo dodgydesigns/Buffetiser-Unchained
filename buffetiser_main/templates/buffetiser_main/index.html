@@ -8,22 +8,37 @@
         {% load static %}
         <link rel="stylesheet" type="text/css" href="{% static 'buffetiser_main/style.css' %}">
 
-        <div class="top">
 
+        <div class="left">
+            <button><a href="/admin">Admin</a></button>
+            <button><a href="/help">Help</a></button>
+            <button><a href="/config">Config</a></button>
+            <button>Live</button>
+            <button><a href="/purchase">New Purchase</a></button>
+            <button>New Sale</button>
+            <button>Quit</button>
+        </div>
 
+        <div id="right">
 
+            <div id="top">
+                {% if investment_list %}
+                    <ul>
+                        {% for investment in investment_list %}
+                            <li><a href="/{{ investment.symbol }}/">{{ investment.name }}</a></li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>No investments are available.</p>
+                {% endif %}
+            </div>
 
+            <div id="bottom">
+                bottom
+            </div>
 
 
         </div>
-        <div class="bottom">
-
-
-
-
-
-
-        </div>
 
 
 
@@ -32,16 +47,8 @@
 
 
 
-        <h1>Blah</h1>
-        {% if investment_list %}
-            <ul>
-                {% for investment in investment_list %}
-                    <li><a href="/{{ investment.symbol }}/">{{ investment.name }}</a></li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <p>No investments are available.</p>
-        {% endif %}
+
+
 
     </body>
 </html>

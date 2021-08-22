@@ -1,11 +1,60 @@
 
-
-
-h1 {
-    color: green;
+html, body {
+  display: flex;
+  height: 100%;
+  width: 100%;
 }
 
 
-li a {
-    color: green;
+
+
+.left {
+    display: block;
+    background: red;
+    width: 5%;
+    height: 100%;
+}
+
+.left button {
+    padding: 5px;
+    margin: 5px;
+    background: black;
+    color: white;
+}
+
+.left button:not(:last-child) {
+  border-bottom: none; /* Prevent double borders */
+}
+
+/* Add a background color on hover */
+.left button:hover {
+  background-color: #3e8e41;
+}
+
+
+
+
+
+#right {
+    display: flex;
+    flex-direction: column;
+    background: green;
+    width: 95%;
+    height: 100%;
+}
+
+#top {
+    background: green;
+    height: 70%;
+}
+
+#bottom {
+    background: pink;
+    height: 30%;
+}
+
+
+
+.new_purchase {
+    display: block;
 }

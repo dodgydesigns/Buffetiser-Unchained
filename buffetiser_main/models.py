@@ -3,12 +3,14 @@ from django.db import models
 
 class Investment(models.Model):
     """
-    This represents either Shares or Crypto-currency. There is only one of these in the system.
-    PK: symbol + exchange
+    This represents either Shares or Crypto-currency. There is only one of these, of each type:platform:symbol
+    in the system.
+    Each one of these however, can have multiple purchases and sales.
+    PK: symbol (+ exchange- would like to but can't yet. Don't know how).
     """
 
     units_held = models.FloatField()                    # float so it can handle shares (int) and crypto (float)
-    total_cost = models.FloatField()                    # can be any float for crypto
+    total_cost = models.FloatField()                    # can be any float
     total_fees = models.FloatField()                    # should only really be dollars/cents.
 
 
@@ -22,26 +24,19 @@ class Purchase(models.Model):
         CRYPTO = ('CR', 'Crypto')
 
     investment_type = models.CharField(choices=InvestmentType.choices,
-                                       max_length=2,
+                                       max_length=20,
                                        default=InvestmentType.SHARES)
     name = models.CharField(max_length=200, default='unnamed')
     symbol = models.CharField(max_length=5, default='none', primary_key=True)
-    currency = models.CharField(max_length=2, default='AUD')
+    currency = models.CharField(max_length=5, default='AUD')
     exchange = models.CharField(max_length=5, default='ASX')
-    platform = models.CharField(max_length=20, default='CMC')          # CMC, Link, Boardroom, ComputerShare
+    platform = models.CharField(max_length=5, default='CMC')          # CMC, Link, Boardroom, ComputerShare
     units = models.FloatField()
     price = models.FloatField()
     fee = models.FloatField()
     date = models.DateField()
 
     unique_together = ('symbol', 'exchange')
-
-
-
-
-
-
-
     # investment = models.ForeignKey(to=Investment, on_delete=models.CASCADE)
 
 

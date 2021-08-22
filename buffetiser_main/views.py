@@ -23,3 +23,35 @@ def help(request):
 def investmentDetails(request, symbol):
     investment = get_object_or_404(Purchase, pk=symbol)
     return render(request, 'buffetiser_main/investment_details.html', {'investment': investment})
+
+
+def newPurchase(request):
+    return render(request, 'buffetiser_main/new_purchase.html')
+
+
+def addPurchase(request):
+
+    type = request.POST['type']
+    symbol = request.POST['symbol']
+    name = request.POST['name']
+    exchange = request.POST['exchange']
+    platform = request.POST['platform']
+    currency = request.POST['currency']
+    units = request.POST['units']
+    price = request.POST['price']
+    fee = request.POST['fee']
+    date = request.POST['date']
+
+    purchase = Purchase(investment_type=type,
+                        symbol=symbol,
+                        name=name,
+                        exchange=exchange,
+                        platform=platform,
+                        currency=currency,
+                        units=units,
+                        price=price,
+                        fee=fee,
+                        date=date)
+    purchase.save()
+    response = "Added purchase:  %s %s %s %s %s %s %s %s %s %s"
+    return HttpResponse(response % (type, symbol, name, exchange, platform, currency, units, price, fee, date))
