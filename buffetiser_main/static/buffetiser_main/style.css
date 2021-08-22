@@ -1,4 +1,10 @@
 
+:root {--COLOUR0: #1B262C;}
+:root {--COLOUR1: #0f4c75;}
+:root {--COLOUR2: #3282b8;}
+:root {--COLOUR3: #bbe1fa;}
+
+
 html, body {
   display: flex;
   height: 100%;
@@ -6,30 +12,40 @@ html, body {
 }
 
 
-
-
 .left {
     display: block;
-    background: red;
-    width: 5%;
+    background: var(--COLOUR0);
+    min-width: 80px;
+    max-width: 80px;
     height: 100%;
 }
 
 .left button {
-    padding: 5px;
-    margin: 5px;
-    background: black;
+    width: 72px;
+    height: 70px;
+    padding: 3px;
+    margin: 2px 5px 2px 5px;
+    background-color: var(--COLOUR2);
     color: white;
-}
-
-.left button:not(:last-child) {
-  border-bottom: none; /* Prevent double borders */
 }
 
 /* Add a background color on hover */
 .left button:hover {
-  background-color: #3e8e41;
+    background-color: var(--COLOUR1);
 }
+
+.left button:visited {
+    color: var(--COLOUR2);
+    background-color: var(--COLOUR2);
+}
+
+.left a {
+    color: inherit;
+    background-color: inherit;
+    text-decoration: none;
+}
+
+
 
 
 
@@ -38,21 +54,31 @@ html, body {
 #right {
     display: flex;
     flex-direction: column;
-    background: green;
+    background: var(--COLOUR0);
     width: 95%;
     height: 100%;
+    padding-right: 5px;
 }
+
 
 #top {
-    background: green;
+    background-color: var(--COLOUR0);
     height: 70%;
+    border-style: solid;
+    border-width: 1px;
+    border-color: white;
 }
+
 
 #bottom {
-    background: pink;
+    background: var(--COLOUR0);
     height: 30%;
+    border-style: solid;
+    border-width: 1px;
+    border-color: white;
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
-
 
 
 .new_purchase {
