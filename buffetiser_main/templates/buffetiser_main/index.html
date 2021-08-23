@@ -19,7 +19,7 @@
             <a href="/config"><button>Config</button></a>
             <a href="/config"><button>Live</button></a>
             <a href="/purchase"><button>New Purchase</button></a>
-            <a href="/config"><button>New Sale</button></a>
+            <a href="/config"><button>New</br>Sale</button></a>
             <a href="/config"><button>Quit</button></a>
         </div>
 
@@ -34,11 +34,18 @@
                                     role="button"
                                     aria-expanded="false"
                                     aria-controls="collapseExample">
-                                    <label id="profit-colour">
+                                    <label id="-{{ investment.symbol }}">
                                         {{ investment.symbol }} ({{ investment.name }})
                                     </label>
                                 </a>
                             </p>
+                            <!-- Script sets text color based on investment profit (positive/negative) -->
+                            <script>
+                                profit = Number(`{{ investment.price }}`);
+                                if (profit === 0) { $("#-{{ investment.symbol }}").css("color", "white"); }
+                                else if (profit > 17.0) { $("#-{{ investment.symbol }}").css("color", "#FF5555"); }
+                                else if (profit < 17.0) { $("#-{{ investment.symbol }}").css("color", "#55FF55"); }
+                            </script>
                             <div class="collapse" id={{ investment.symbol }}>
                                 <div class="card card-body" id="panel-container">
                                     <div class="panel-body">
@@ -54,7 +61,7 @@
                                                     <tr><td>Units Held</td><td>{{ investment.units }}</td></tr>
                                                     <tr><td>Total Cost</td><td>$1786.90</td></tr>
                                                     <tr><td>Live Price</td><td>$12.90</td></tr>
-                                                    <tr><td>Value</td><td>$87660</td></tr>
+                                                    <tr><td>Value</td><td>$87660.76</td></tr>
                                                     <tr><td>Profit</td><td id="profit-colour">$778</td></tr>
                                                     <tr><td></td><td id="profit-colour">64%</td></tr>
                                                 </table>
@@ -63,16 +70,6 @@
                                     </div>
                                 </div>
                             </div>
-                                <!-- Script sets text color based on investment profit (positive/negative) -->
-                                <script>
-                                    profit = {{ investment.price }};
-                                    if (profit > 10) {
-                                        $("#profit-colour").css("color", "red"); }
-                                    else if (profit === 1) {
-                                        $("#profit-colour").css("color", "white"); }
-                                    else {
-                                        $("#profit-colour").css("color", "green"); }
-                                </script>
                         {% endfor %}
                 {% else %}
                     <p>No investments are available.</p>
