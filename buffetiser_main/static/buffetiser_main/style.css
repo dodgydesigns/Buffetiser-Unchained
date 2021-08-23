@@ -45,11 +45,6 @@ html, body {
 }
 
 
-
-
-
-
-
 #right {
     display: flex;
     flex-direction: column;
@@ -66,6 +61,10 @@ html, body {
     border-style: solid;
     border-width: 1px;
     border-color: white;
+    margin-top: 2px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    text-align: center;
 }
 
 .pull-left {
@@ -73,21 +72,67 @@ html, body {
     margin-right: 10px;
 }
 
-.panel-title {
-    margin-left: 10px;
+#inner-left {
+    float: left;
+    width: 90%;
+    margin: 0px;
 }
 
-.panel-body {
+#inner-right {
+    float: right;
+    width: 10%;
+    min-width: 100px;
+    height: 100%;
+    margin-top: 5%;
+}
+
+.panel-title {
+    margin-left: 10px;
+    margin-right: 10px;
+    width: 100%;
+}
+
+a.btn.btn-primary.panel-title {
+    background-color: var(--COLOUR2);
+    border-color: var(--COLOUR0);
+}
+
+#panel-container {
+    margin-left: 10px;
+    margin-right: 10px;
+    width: 100%;
     background-color: black;
     color: white;
 }
 
+.panel-body {
+    margin: 0px;
+    width: 100%;
+    background-color: black;
+    color: white;
+}
 
+#graph {
+    width: 100%;
+}
 
+.card .card-body .panel-container {
+    background-color: black;
+}
 
+#inner-right-table {
+    width: 100%;
+    height: 200%;
+    border-collapse: collapse;
+    border: 1px solid var(--COLOUR3);
+    margin-right: 5px;
+    font-size: 80%;
+    text-align: right;
+}
 
-
-
+#inner-right-table th, td {
+  border: 1px solid var(--COLOUR3)
+}
 
 
 

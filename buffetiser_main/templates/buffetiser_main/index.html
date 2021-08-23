@@ -1,78 +1,12 @@
 <!DOCTYPE html>
-
-
-
-{#<script type="text/javascript" src="{{ STATIC_URL }} /static/jquery-3.6.0.js"></script>#}
-{#<script type="text/javascript" src="{{ STATIC_URL }} /static/bootstrap-5.0.2/js/bootstrap.bundle.min.js"></script>#}
-<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<script src="https://netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
 {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'buffetiser_main/font-awesome.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'buffetiser_main/style.css' %}">
-<script>
-    $(document).ready(function() {
-
-        (function($, window, document){
-            var panelSelector = '[data-perform="panel-collapse"]';
-
-            $(panelSelector).each(function() {
-            var $this = $(this),
-            parent = $this.closest('.panel'),
-            wrapper = parent.find('.panel-wrapper'),
-            collapseOpts = {toggle: false};
-
-            if( ! wrapper.length) {
-            wrapper = parent.children('.panel-heading').nextAll()
-            .wrapAll('<div/>')
-            .parent()
-            .addClass('panel-wrapper');
-            collapseOpts = {};
-            }
-            wrapper.collapse(collapseOpts).on('hide.bs.collapse', function() {
-                $this.children('i').removeClass('fa-minus').addClass('fa-plus');
-                }).on('show.bs.collapse', function() {
-                $this.children('i').removeClass('fa-plus').addClass('fa-minus');
-                });
-            });
-            $(document).on('click', panelSelector, function (e) {
-                e.preventDefault();
-                var parent = $(this).closest('.panel');
-                var wrapper = parent.find('.panel-wrapper');
-                wrapper.collapse('toggle');
-            });
-        }(jQuery, window, document));
-
-
-        (function($, window, document){
-            var panelSelector = '[data-perform="panel-dismiss"]';
-            $(document).on('click', panelSelector, function (e) {
-                e.preventDefault();
-                var parent = $(this).closest('.panel');
-                removeElement();
-
-                function removeElement() {
-                    var col = parent.parent();
-                        parent.remove();
-                        col.filter(function() {
-                        var el = $(this);
-                        return (el.is('[class*="col-"]') && el.children('*').length === 0);
-                    }).remove();
-                }
-            });
-        }(jQuery, window, document));
-    });
-</script>
-
-
-
-
-
-
-
-
-
-
+    <link rel="stylesheet" type="text/css" href="{% static 'buffetiser_main/bootstrap-5.0.2/css/bootstrap.css' %}">
+    <link rel="shortcut icon" type="image/jpg" href="{% static 'buffetiser_main/img/icon.png' %}"/>
+    <script src="{% static 'buffetiser_main/bootstrap-5.0.2/js/bootstrap.js' %}"></script>
+    <script src="{% static 'buffetiser_main/jquery-3.6.0.js' %}"></script>
+    <script src="{% static 'buffetiser_main/scripts.js' %}"></script>
 <html>
     <head>
         <meta charset="utf-8">
@@ -93,27 +27,52 @@
             <div id="top">
                 {% if investment_list %}
                         {% for investment in investment_list %}
-                            <div class="panel panel-primary">
-                                <div class="panel-heading" >                                    <!-- title bar -->
-                                    <h4 class="panel-title" data-collapsed="true">
+                           <p >
+                                <a class="btn btn-primary panel-title"
+                                    data-bs-toggle="collapse"
+                                    href="#{{ investment.symbol }}"
+                                    role="button"
+                                    aria-expanded="false"
+                                    aria-controls="collapseExample">
+                                    <label id="profit-colour">
                                         {{ investment.symbol }} ({{ investment.name }})
-                                      <div class="pull-left" >
-                                          <a href="#"
-                                             data-perform="panel-collapse"
-                                             data-toggle="collapse"
-                                             class="btn btn-primary btn-xs pull-right" >
-                                              <i class="fa fa-minus"></i>
-                                          </a>
-                                      </div>
-                                    </h4>
-                                </div>
-                                    <div class="panel-wrapper collapse in">
-                                    <div class="panel-body" style="margin-bottom: -20px;">
-                                        hi
-                                        <img src="">
-                                    </div>                                                      <!-- panel content -->
+                                    </label>
+                                </a>
+                            </p>
+                            <div class="collapse" id={{ investment.symbol }}>
+                                <div class="card card-body" id="panel-container">
+                                    <div class="panel-body">
+                                        {% load static %}
+                                        <div >
+                                            <div id="inner-left">
+                                                {% load static %}
+                                                <img id="graph" src="{% static 'buffetiser_main/img/graph.png' %}">
+                                            </div>
+                                            <div id="inner-right">
+                                                <table id="inner-right-table">
+                                                    <tr><td>Cost Price</td><td>${{ investment.price }}</td></tr>
+                                                    <tr><td>Units Held</td><td>{{ investment.units }}</td></tr>
+                                                    <tr><td>Total Cost</td><td>$1786.90</td></tr>
+                                                    <tr><td>Live Price</td><td>$12.90</td></tr>
+                                                    <tr><td>Value</td><td>$87660</td></tr>
+                                                    <tr><td>Profit</td><td id="profit-colour">$778</td></tr>
+                                                    <tr><td></td><td id="profit-colour">64%</td></tr>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
+                                <!-- Script sets text color based on investment profit (positive/negative) -->
+                                <script>
+                                    profit = {{ investment.price }};
+                                    if (profit > 10) {
+                                        $("#profit-colour").css("color", "red"); }
+                                    else if (profit === 1) {
+                                        $("#profit-colour").css("color", "white"); }
+                                    else {
+                                        $("#profit-colour").css("color", "green"); }
+                                </script>
                         {% endfor %}
                 {% else %}
                     <p>No investments are available.</p>
