@@ -1,33 +1,42 @@
 <!DOCTYPE html>
 
 {% load static %}
+{% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'buffetiser_main/font-awesome.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'buffetiser_main/style.css' %}">
-
+    <link rel="stylesheet" type="text/css" href="{% static 'buffetiser_main/w3.css' %}">
+    <link rel="shortcut icon" type="image/jpg" href="{% static 'buffetiser_main/img/icon.png' %}"/>
+    <script src="{% static 'buffetiser_main/jquery-3.6.0.js' %}"></script>
+    <script src="{% static 'buffetiser_main/scripts.js' %}"></script>
 <html lang="en">
     <head>
         <meta charset="UTF-8">
         <title>New Purchase</title>
     </head>
     <body class="new_purchase">
-    <h1>New Purchase</h1>
+        <div class="w3-card-4">
+            <div class="w3-container">
+              <h2>Add New Investment Purchase</h2>
+            </div>
+            <div>
+                <form class="w3-container" action="add_purchase" method="post">
+                {% csrf_token %}
+                <fieldset>
+                    <label>Type</label><input type="text" class="w3-input" id="type" name="type" required>
+                    <label>Symbol</label><input type="text" class="w3-input" id="symbol" name="symbol" required>
+                    <label>Name</label><input type="text" class="w3-input" id="name" name="name" required>
+                    <label>Exchange</label><input type="text" class="w3-input" id="exchange" name="exchange" required>
+                    <label>Platform</label><input type="text" class="w3-input" id="platform" name="platform" required>
+                    <label>Currency</label><input type="text" class="w3-input" id="currency" name="currency" required>
+                    <label>Units</label><input type="text" class="w3-input" id="units" name="units" required>
+                    <label>Price</label><input type="text" class="w3-input" id="price" name="price" required>
+                    <label>Fee</label><input type="text" class="w3-input" id="fee" name="fee" required>
+                    <label>Date</label><input type="date" class="w3-input" id="date" name="date" required>
 
-        <form action="add_purchase" method="post">
-        {% csrf_token %}
-        <fieldset>
-            <label>Type</label><input type="text" id="type" name="type" required>
-            <label>Symbol</label><input type="text" id="symbol" name="symbol" required>
-            <label>Name</label><input type="text" id="name" name="name" required>
-            <label>Exchange</label><input type="text" id="exchange" name="exchange" required>
-            <label>Platform</label><input type="text" id="platform" name="platform" required>
-            <label>Currency</label><input type="text" id="currency" name="currency" required>
-            <label>Units</label><input type="text" id="units" name="units" required>
-            <label>Price</label><input type="text" id="price" name="price" required>
-            <label>Fee</label><input type="text" id="fee" name="fee" required>
-            <label>Date</label><input type="date" id="date" name="date" required>
-
-            <input type="submit" value="Add">
-        </fieldset>
-        </form>
-
+                    <button type="submit" class="submit-btn">Add</button>
+                </fieldset>
+                </form>
+            </div>
+        </div>
     </body>
 </html>

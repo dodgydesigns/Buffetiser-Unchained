@@ -22,30 +22,20 @@
             <a href="/config"><button>New</br>Sale</button></a>
             <a href="/config"><button>Quit</button></a>
         </div>
-
         <div id="right">
             <div id="top">
                 {% if investment_list %}
                         {% for investment in investment_list %}
-                           <p >
-                                <a class="btn btn-primary panel-title"
-                                    data-bs-toggle="collapse"
-                                    href="#{{ investment.symbol }}"
-                                    role="button"
-                                    aria-expanded="false"
-                                    aria-controls="collapseExample">
-                                    <label id="-{{ investment.symbol }}">
-                                        {{ investment.symbol }} ({{ investment.name }})
-                                    </label>
-                                </a>
-                            </p>
-                            <!-- Script sets text color based on investment profit (positive/negative) -->
-                            <script>
-                                profit = Number(`{{ investment.price }}`);
-                                if (profit === 0) { $("#-{{ investment.symbol }}").css("color", "white"); }
-                                else if (profit > 17.0) { $("#-{{ investment.symbol }}").css("color", "#FF5555"); }
-                                else if (profit < 17.0) { $("#-{{ investment.symbol }}").css("color", "#55FF55"); }
-                            </script>
+                            <a class="btn btn-primary panel-title"
+                                data-bs-toggle="collapse"
+                                href="#{{ investment.symbol }}"
+                                role="button"
+                                aria-expanded="false"
+                                aria-controls="collapseExample">
+                                <label class="-{{ investment.symbol }}">
+                                    {{ investment.symbol }} ({{ investment.name }})
+                                </label>
+                            </a>
                             <div class="collapse" id={{ investment.symbol }}>
                                 <div class="card card-body" id="panel-container">
                                     <div class="panel-body">
@@ -62,14 +52,21 @@
                                                     <tr><td>Total Cost</td><td>$1786.90</td></tr>
                                                     <tr><td>Live Price</td><td>$12.90</td></tr>
                                                     <tr><td>Value</td><td>$87660.76</td></tr>
-                                                    <tr><td>Profit</td><td id="profit-colour">$778</td></tr>
-                                                    <tr><td></td><td id="profit-colour">64%</td></tr>
+                                                    <tr><td>Profit</td><td class="-{{ investment.symbol }}">$778</td></tr>
+                                                    <tr><td></td><td><label class="-{{ investment.symbol }}">64%</label></td></tr>
                                                 </table>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            <!-- Script sets text color based on investment profit (positive/negative) -->
+                            <script>
+                                profit = Number(`{{ investment.price }}`);
+                                if (profit === 0) { $(".-{{ investment.symbol }}").css("color", "white"); }
+                                else if (profit > 17.0) { $(".-{{ investment.symbol }}").css("color", "#FF5555"); }
+                                else if (profit < 17.0) { $(".-{{ investment.symbol }}").css("color", "#55FF55"); }
+                            </script>
                         {% endfor %}
                 {% else %}
                     <p>No investments are available.</p>

@@ -94,8 +94,7 @@ html, body {
 
 #inner-right {
     float: right;
-    width: 10%;
-    min-width: 170px;
+    width: 14%;
     height: 100%;
     margin-top: 5%;
 }
@@ -119,19 +118,8 @@ a.btn.btn-primary.panel-title {
     color: white;
 }
 
-.panel-body {
-    margin: 0px;
-    width: 100%;
-    background-color: black;
-    color: white;
-}
-
 #graph {
     width: 100%;
-}
-
-.card .card-body .panel-container {
-    background-color: black;
 }
 
 #inner-right-table {
@@ -166,5 +154,42 @@ table, table th, table td {
 
     ----------------------------------------------------  */
 .new_purchase {
-    display: block;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    background: var(--COLOUR0);
+    color: white;
+    width: 100%;
+}
+
+.w3-container {
+    width: 800px;
+}
+
+.w3-input {
+    background-color: var(--COLOUR1);
+    color: white;
+    margin-bottom: 10px;
+}
+
+.w3-input[type=text]:focus {
+  background-color: var(--COLOUR2);
+}
+
+.submit-btn {
+    width: 80px;
+    height: 70px;
+    padding: 3px;
+    margin: 2px 5px 2px 5px;
+    background-color: var(--COLOUR2);
+    color: white;
+}
+
+.submit-btn:hover {
+    background-color: var(--COLOUR1);
+}
+
+.submit-btn:visited {
+    color: var(--COLOUR2);
+    background-color: var(--COLOUR2);
 }
