@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
-from buffetiser_main.models import Investment, Purchase
+from buffetiser_main.models import Purchase
 
 
 def main(request):
@@ -26,17 +26,18 @@ def investmentDetails(request, symbol):
 
 
 def newPurchase(request):
-    return render(request, 'buffetiser_main/new_purchase.html')
+    emptyPurchase = Purchase()
+    return render(request, 'buffetiser_main/new_purchase.html', {'emptyPurchase': emptyPurchase})
 
 
 def addPurchase(request):
 
-    type = request.POST['type']
+    type = request.POST.get('type', '---')
     symbol = request.POST['symbol']
     name = request.POST['name']
-    exchange = request.POST['exchange']
-    platform = request.POST['platform']
-    currency = request.POST['currency']
+    exchange = request.POST.get('exchange', '---')
+    platform = request.POST.get('platform', '---')
+    currency = request.POST.get('currency', '---')
     units = request.POST['units']
     price = request.POST['price']
     fee = request.POST['fee']

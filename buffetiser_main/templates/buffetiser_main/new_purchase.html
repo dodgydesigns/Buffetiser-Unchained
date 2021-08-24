@@ -22,12 +22,36 @@
                 <form class="w3-container" action="add_purchase" method="post">
                 {% csrf_token %}
                 <fieldset>
-                    <label>Type</label><input type="text" class="w3-input" id="type" name="type" required>
+                    <label>Type</label>
+                    <select class="w3-select" name="type">
+                      <option value="" disabled selected>Choose your option</option>
+                        {% for t in emptyPurchase.InvestmentType.choices %}
+                            <option id="type" name="type" value={{ t.0 }}>{{ t.1 }}</option>
+                        {% endfor %}
+                    </select>
                     <label>Symbol</label><input type="text" class="w3-input" id="symbol" name="symbol" required>
                     <label>Name</label><input type="text" class="w3-input" id="name" name="name" required>
-                    <label>Exchange</label><input type="text" class="w3-input" id="exchange" name="exchange" required>
-                    <label>Platform</label><input type="text" class="w3-input" id="platform" name="platform" required>
-                    <label>Currency</label><input type="text" class="w3-input" id="currency" name="currency" required>
+                    <label>Exchange</label>
+                    <select class="w3-select" name="exchange">
+                      <option value="" disabled selected>Choose your option</option>
+                        {% for t in emptyPurchase.Exchanges.choices %}
+                            <option id="exchange" name="exchange" value={{ t.0 }}>{{ t.1 }}</option>
+                        {% endfor %}
+                    </select>
+                    <label>Platform</label>
+                    <select class="w3-select" name="platform">
+                      <option value="" disabled selected>Choose your option</option>
+                        {% for t in emptyPurchase.Platforms.choices %}
+                            <option id="platform" name="platform" value={{ t.0 }}>{{ t.1 }}</option>
+                        {% endfor %}
+                    </select>
+                    <label>Currency</label>
+                    <select class="w3-select" name="currency">
+                      <option value="" disabled selected>Choose your option</option>
+                        {% for t in emptyPurchase.Currencies.choices %}
+                            <option id="currency" name="currency" value={{ t.0 }}>{{ t.1 }}</option>
+                        {% endfor %}
+                    </select>
                     <label>Units</label><input type="text" class="w3-input" id="units" name="units" required>
                     <label>Price</label><input type="text" class="w3-input" id="price" name="price" required>
                     <label>Fee</label><input type="text" class="w3-input" id="fee" name="fee" required>

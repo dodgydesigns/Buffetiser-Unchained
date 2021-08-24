@@ -3,7 +3,7 @@
 :root {--COLOUR1: #0f4c75;}
 :root {--COLOUR2: #3282b8;}
 :root {--COLOUR3: #bbe1fa;}
-
+:root {--COLOUR4: #aaaaaa;}
 
 html, body {
     display: flex;
@@ -168,12 +168,18 @@ table, table th, table td {
 
 .w3-input {
     background-color: var(--COLOUR1);
-    color: white;
+    color: var(--COLOUR4);
     margin-bottom: 10px;
 }
 
 .w3-input[type=text]:focus {
   background-color: var(--COLOUR2);
+}
+
+select.w3-select {
+    background-color: var(--COLOUR1);
+    color: var(--COLOUR4);
+    margin-bottom: 10px;
 }
 
 .submit-btn {
