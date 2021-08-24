@@ -47,13 +47,13 @@
                                             </div>
                                             <div id="inner-right">
                                                 <table id="inner-right-table">
-                                                    <tr><td>Cost Price</td><td>${{ investment.price }}</td></tr>
-                                                    <tr><td>Units Held</td><td>{{ investment.units }}</td></tr>
-                                                    <tr><td>Total Cost</td><td>$1786.90</td></tr>
-                                                    <tr><td>Live Price</td><td>$12.90</td></tr>
-                                                    <tr><td>Value</td><td>$87660.76</td></tr>
-                                                    <tr><td>Profit</td><td class="-{{ investment.symbol }}">$778</td></tr>
-                                                    <tr><td></td><td><label class="-{{ investment.symbol }}">64%</label></td></tr>
+                                                    <tr><td>Average Cost</td><td>${{ investment.average_cost|stringformat:'.2f' }}</td></tr>
+                                                    <tr><td>Units Held</td><td>{{ investment.units_held|stringformat:'d' }}</td></tr>
+                                                    <tr><td>Total Cost</td><td>${{ investment.total_cost|stringformat:'.2f' }}</td></tr>
+                                                    <tr><td>Live Price</td><td>${{ investment.live_price }}</td></tr>
+                                                    <tr><td>Value</td><td>${{ investment.total_value|stringformat:'.2f' }}</td></tr>
+                                                    <tr><td>Profit</td><td class="-{{ investment.symbol }}">{{ investment.profit|stringformat:'.2f' }}</td></tr>
+                                                    <tr><td></td><td><label class="-{{ investment.symbol }}">{{ investment.percent_profit|stringformat:'.2f' }}%</label></td></tr>
                                                 </table>
                                             </div>
                                         </div>
@@ -62,10 +62,10 @@
                             </div>
                             <!-- Script sets text color based on investment profit (positive/negative) -->
                             <script>
-                                profit = Number(`{{ investment.price }}`);
+                                profit = Number(`{{ investment.profit }}`);
                                 if (profit === 0) { $(".-{{ investment.symbol }}").css("color", "white"); }
-                                else if (profit > 17.0) { $(".-{{ investment.symbol }}").css("color", "#FF5555"); }
-                                else if (profit < 17.0) { $(".-{{ investment.symbol }}").css("color", "#55FF55"); }
+                                else if (profit < 0) { $(".-{{ investment.symbol }}").css("color", "#FF5555"); }
+                                else if (profit > 0) { $(".-{{ investment.symbol }}").css("color", "#55FF55"); }
                             </script>
                         {% endfor %}
                 {% else %}

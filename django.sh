@@ -9,7 +9,7 @@ django_version=$(python3 -m django --version)
 
 
 function info() {
-    echo ""
+  echo ""
 	echo "	Application: 		" $application
 	echo "	Current directory:	" $application_directory
 	echo "	Django version:		" $django_version
@@ -19,7 +19,7 @@ function info() {
 
 function run_server() {
 	# Start the built-in Django test server
-    echo ""
+  echo ""
 	echo "Starting Django test server..."
 	nohup python3 manage.py runserver > /dev/null 2>&1 & 
 	echo ""
@@ -27,7 +27,7 @@ function run_server() {
 
 function kill_server() {
 	# Stop the built-in Django test server
-    echo ""
+  echo ""
 	echo "Killing Django test server."
 	pkill -f runserver
 	echo "Dead."
@@ -37,7 +37,7 @@ function kill_server() {
 function make_migrations() {
 	# By running makemigrations, you’re telling Django that you’ve made some changes to your models 
 	# (in this case, you’ve made new ones) and that you’d like the changes to be stored as a migration.
-    echo ""
+  echo ""
 	echo "Adding model changes to migration."
 	python3 manage.py makemigrations buffetiser_main
 	echo "Dead."
@@ -47,7 +47,7 @@ function make_migrations() {
 function migrate() {
 	# The migrate command looks at the INSTALLED_APPS setting and creates any necessary database tables 
 	# according to the database settings in your mysite/settings.py
-    echo ""
+  echo ""
 	echo "Migrating to DB"
 	python3 manage.py migrate
 	echo "Dead."
@@ -55,13 +55,21 @@ function migrate() {
 }
 
 function shell() {
-
-    echo ""
+  #
+  echo ""
 	echo "Running interactive shell"
-    python manage.py shell
+    python3 manage.py shell
 }
 
-
+function super() {
+  echo "Creating Superuser"
+  python3 manage.py createsuperuser
+}
+function wipe() {
+  echo "Wiping database data and tables"
+  python3 manage.py flush
+  echo "Gone!"
+}
 
 
 
@@ -75,6 +83,8 @@ echo "
 5) Migrate
 6) Shell
 
+8) Create Superuser
+9) Wipe
 0) Exit
 -----------------
 Choose an option: "
@@ -86,6 +96,8 @@ Choose an option: "
 	        4) make_migrations ; menu ;;
 	        5) migrate ; menu ;;
 	        6) shell ; menu ;;
+	        8) super ; menu ;;
+	        9) wipe ; menu ;;
 	        0) exit 0 ;;
         esac
 }

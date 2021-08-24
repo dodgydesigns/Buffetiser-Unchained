@@ -9,14 +9,6 @@ class Investment(models.Model):
     PK: symbol (+ exchange- would like to but can't yet. Don't know how).
     """
 
-    units_held = models.FloatField()                    # float so it can handle shares (int) and crypto (float)
-    total_cost = models.FloatField()                    # can be any float
-    total_fees = models.FloatField()                    # should only really be dollars/cents.
-
-
-class Purchase(models.Model):
-    """
-    """
     class InvestmentType(models.TextChoices):
         """
         We want enumeration for investment type as there is only a set, finite number of choices.
@@ -76,16 +68,79 @@ class Purchase(models.Model):
     platform = models.CharField(choices=Platforms.choices,
                                 max_length=255,
                                 default=Platforms.CMC)
+
+    units_held = models.FloatField(default=0)               # float so it can handle shares (int) and crypto (float)
+    total_fees = models.FloatField(default=0)               # should only really be dollars/cents.
+    average_cost = models.FloatField(default=0)             #
+    total_cost = models.FloatField(default=0)               # can be any float
+    live_price = models.FloatField(default=0)
+    total_value = models.FloatField(default=0)
+    profit = models.FloatField(default=0)
+    percent_profit = models.FloatField(default=0)
+
+
+class Purchase(models.Model):
+    """
+    """
+    class InvestmentType(models.TextChoices):
+        """
+        We want enumeration for investment type as there is only a set, finite number of choices.
+        """
+        SHARES = ('Shares', 'Shares')
+        CRYPTO = ('Crypto', 'Crypto')
+
+    class Exchanges(models.TextChoices):
+        """
+
+        """
+        XAMS = ('XAMS', 'XAMS')
+        XASX = ('XASX', 'XASX')
+        XBOM = ('XBOM', 'XBOM')
+        XBRU = ('XBRU', 'XBRU')
+        XFRA = ('XFRA', 'XFRA')
+        XHKG = ('XHKG', 'XHKG')
+        XJPX = ('XJPX', 'XJPX')
+        XKOS = ('XKOS', 'XKOS')
+        XLIS = ('XLIS', 'XLIS')
+        XLON = ('XLON', 'XLON')
+        XMIL = ('XMIL', 'XMIL')
+        XMSM = ('XMSM', 'XMSM')
+        XNAS = ('XNAS', 'XNAS')
+        XNSE = ('XNSE', 'XNSE')
+        XNYS = ('XNYS', 'XNYS')
+        XOSL = ('XOSL', 'XOSL')
+        XSAU = ('XSAU', 'XSAU')
+        XSHE = ('XSHE', 'XSHE')
+        XSHG = ('XSHG', 'XSHG')
+        XSWX = ('XSWX', 'XSWX')
+        XTAI = ('XTAI', 'XTAI')
+        XTSE = ('XTSE', 'XTSE')
+
+    class Platforms(models.TextChoices):
+        """
+        """
+        CMC = ('CMC', 'CMC')
+        LINK = ('LINK', 'LINK')
+        BOARDROOM = ('BOARDROOM', 'BOARDROOM')
+
+    class Currencies(models.TextChoices):
+        """
+        We want enumeration for investment type as there is only a set, finite number of choices.
+        """
+        AUD = ('AUD', 'AUD')
+        USD = ('USD', 'USD')
+
     units = models.FloatField()
     price = models.FloatField()
     fee = models.FloatField()
     date = models.DateField()
 
-    unique_together = ('symbol', 'exchange')
-    # investment = models.ForeignKey(to=Investment, on_delete=models.CASCADE)
+    investment = models.ForeignKey(to=Investment, on_delete=models.CASCADE)
 
 
 class Sale(models.Model):
+    """
+    """
     units = models.FloatField()
     price = models.FloatField()
     fee = models.FloatField()
@@ -95,6 +150,8 @@ class Sale(models.Model):
 
 
 class History(models.Model):
+    """
+    """
     date = models.DateField()
     open = models.FloatField()
     high = models.FloatField()

@@ -4,12 +4,26 @@
         <meta charset="UTF-8">
         <title>Title</title>
     </head>
-    <body>
+    <body class="investmentDetails">
         {% load static %}
         <link rel="stylesheet" type="text/css" href="{% static 'buffetiser_main/style.css' %}">
 
-        <h1>{{ investment.symbol }}</h1>
+        <h1>Investment</h1>
+        <h3>{{ investment.symbol }}</h3>
         <h3>{{ investment.name }}</h3>
+        <h3>{{ investment.type }}</h3>
+        <h3>{{ investment.exchange }}</h3>
+        <h3>{{ investment.platform }}</h3>
+        <h3>{{ investment.currency }}</h3>
+        <hr>
+        <h1>Purchases</h1>
+        {% for purchase in investment.purchase_set.all %}
+            <h3>{{ purchase.units }}</h3>
+            <h3>{{ purchase.price }}</h3>
+            <h3>{{ purchase.fee }}</h3>
+            <h3>{{ purchase.date }}</h3>
+        {% endfor %}
+
 
 
 

@@ -199,3 +199,17 @@ select.w3-select {
     color: var(--COLOUR2);
     background-color: var(--COLOUR2);
 }
+
+
+
+
+
+
+
+
+
+
+.investmentDetails {
+    display: flex;
+    flex-direction: column;
+}
