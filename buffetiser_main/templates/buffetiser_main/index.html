@@ -2,25 +2,28 @@
 {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'buffetiser_main/font-awesome.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'buffetiser_main/style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'buffetiser_main/w3.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'buffetiser_main/bootstrap-5.0.2/css/bootstrap.css' %}">
     <link rel="shortcut icon" type="image/jpg" href="{% static 'buffetiser_main/img/icon.png' %}"/>
     <script src="{% static 'buffetiser_main/bootstrap-5.0.2/js/bootstrap.js' %}"></script>
     <script src="{% static 'buffetiser_main/jquery-3.6.0.js' %}"></script>
     <script src="{% static 'buffetiser_main/scripts.js' %}"></script>
-<html>
+<html lang="en">
     <head>
         <meta charset="utf-8">
         <title>Buffetiser Unchained</title>
     </head>
     <body>
         <div class="left">
-            <a href="/admin"><button>Admin</button></a>
-            <a href="/help"><button>Help</button></a>
-            <a href="/config"><button>Config</button></a>
-            <a href="/config"><button>Live</button></a>
-            <a href="/purchase"><button>New Purchase</button></a>
-            <a href="/config"><button>New</br>Sale</button></a>
-            <a href="/config"><button>Quit</button></a>
+            {% load static %}
+            <img id="graph" src="{% static 'buffetiser_main/img/icon.png' %}">
+            <a href="/admin"><button class="w3-btn w3-round">Admin</button></a>
+            <a href="/help"><button class="w3-btn w3-round">Help</button></a>
+            <a href="/config"><button class="w3-btn w3-round">Config</button></a>
+            <a href="/config"><button class="w3-btn w3-round">Live</button></a>
+            <a href="/purchase"><button class="w3-btn w3-round">Purchase</button></a>
+            <a href="/config"><button class="w3-btn w3-round">Sale</button></a>
+            <a href="/config"><button class="w3-btn w3-round">Quit</button></a>
         </div>
         <div id="right">
             <div id="top">

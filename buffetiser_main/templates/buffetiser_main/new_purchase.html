@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-
-{% load static %}
 {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'buffetiser_main/font-awesome.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'buffetiser_main/style.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'buffetiser_main/w3.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'buffetiser_main/bootstrap-5.0.2/css/bootstrap.css' %}">
     <link rel="shortcut icon" type="image/jpg" href="{% static 'buffetiser_main/img/icon.png' %}"/>
+    <script src="{% static 'buffetiser_main/bootstrap-5.0.2/js/bootstrap.js' %}"></script>
     <script src="{% static 'buffetiser_main/jquery-3.6.0.js' %}"></script>
     <script src="{% static 'buffetiser_main/scripts.js' %}"></script>
 <html lang="en">
@@ -25,7 +25,7 @@
                     <label>Type</label>
                     <select class="w3-select" name="type">
                       <option value="" disabled selected>Choose your option</option>
-                        {% for t in emptyPurchase.InvestmentType.choices %}
+                        {% for t in constants.InvestmentType.choices %}
                             <option id="type" name="type" value={{ t.0 }}>{{ t.1 }}</option>
                         {% endfor %}
                     </select>
@@ -34,21 +34,21 @@
                     <label>Exchange</label>
                     <select class="w3-select" name="exchange">
                       <option value="" disabled selected>Choose your option</option>
-                        {% for t in emptyPurchase.Exchanges.choices %}
+                        {% for t in constants.Exchanges.choices %}
                             <option id="exchange" name="exchange" value={{ t.0 }}>{{ t.1 }}</option>
                         {% endfor %}
                     </select>
                     <label>Platform</label>
                     <select class="w3-select" name="platform">
                       <option value="" disabled selected>Choose your option</option>
-                        {% for t in emptyPurchase.Platforms.choices %}
+                        {% for t in constants.Platforms.choices %}
                             <option id="platform" name="platform" value={{ t.0 }}>{{ t.1 }}</option>
                         {% endfor %}
                     </select>
                     <label>Currency</label>
                     <select class="w3-select" name="currency">
                       <option value="" disabled selected>Choose your option</option>
-                        {% for t in emptyPurchase.Currencies.choices %}
+                        {% for t in constants.Currencies.choices %}
                             <option id="currency" name="currency" value={{ t.0 }}>{{ t.1 }}</option>
                         {% endfor %}
                     </select>
@@ -57,7 +57,7 @@
                     <label>Fee</label><input type="text" class="w3-input" id="fee" name="fee" required>
                     <label>Date</label><input type="date" class="w3-input" id="date" name="date" required>
 
-                    <button type="submit" class="submit-btn">Add</button>
+                    <button type="submit" class="submit-btn w3-btn w3-round">Add</button>
                 </fieldset>
                 </form>
             </div>

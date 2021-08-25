@@ -19,33 +19,25 @@ html, body {
 .left {
     display: block;
     background: var(--COLOUR0);
-    min-width: 90px;
-    max-width: 90px;
+    min-width: 100px;
+    max-width: 100px;
     height: 100%;
+    padding-left: 2px;
 }
 
-.left button {
-    width: 80px;
-    height: 70px;
-    padding: 3px;
-    margin: 2px 5px 2px 5px;
+.left img {
+    padding: 10px 5px 20px;
+}
+
+.left .w3-btn {
+    margin: 2px;
+    width: 90px;
     background-color: var(--COLOUR2);
     color: white;
 }
 
-.left button:hover {
+.left .w3-btn:hover {
     background-color: var(--COLOUR1);
-}
-
-.left button:visited {
-    color: var(--COLOUR2);
-    background-color: var(--COLOUR2);
-}
-
-.left a {
-    color: inherit;
-    background-color: inherit;
-    text-decoration: none;
 }
 
 
@@ -56,7 +48,7 @@ html, body {
     display: flex;
     flex-direction: column;
     background: var(--COLOUR0);
-    width: 95%;
+    width: 100%;
     height: 100%;
     padding-right: 5px;
 }
@@ -89,20 +81,16 @@ html, body {
 #inner-left {
     float: left;
     width: 86%;
-    margin: 0px;
 }
 
 #inner-right {
     float: right;
     width: 14%;
-    height: 100%;
     margin-top: 5%;
 }
 
 .panel-title {
-    margin-left: 10px;
-    margin-right: 10px;
-    width: 100%;
+    width: 99%;
 }
 
 a.btn.btn-primary.panel-title {
@@ -111,11 +99,11 @@ a.btn.btn-primary.panel-title {
 }
 
 #panel-container {
-    margin-left: 10px;
-    margin-right: 10px;
-    width: 100%;
+    width: 98.8%;
     background-color: black;
     color: white;
+    margin-left: 10px;
+    margin-right: 10px;
 }
 
 #graph {
@@ -182,11 +170,9 @@ select.w3-select {
     margin-bottom: 10px;
 }
 
-.submit-btn {
-    width: 80px;
-    height: 70px;
-    padding: 3px;
-    margin: 2px 5px 2px 5px;
+button.submit-btn {
+    margin: 2px;
+    width: 90px;
     background-color: var(--COLOUR2);
     color: white;
 }
@@ -195,20 +181,10 @@ select.w3-select {
     background-color: var(--COLOUR1);
 }
 
-.submit-btn:visited {
-    color: var(--COLOUR2);
-    background-color: var(--COLOUR2);
-}
 
+/*  ----------------------------------------------------
 
-
-
-
-
-
-
-
-
+    ----------------------------------------------------  */
 .investmentDetails {
     display: flex;
     flex-direction: column;
