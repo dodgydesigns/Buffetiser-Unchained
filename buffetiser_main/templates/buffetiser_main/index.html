@@ -14,7 +14,7 @@
         <title>Buffetiser Unchained</title>
     </head>
     <body>
-        <div class="left">
+        <div id="left">
             {% load static %}
             <img id="graph" src="{% static 'buffetiser_main/img/icon.png' %}">
             <a href="/admin"><button class="w3-btn w3-round">Admin</button></a>
@@ -28,49 +28,49 @@
         <div id="right">
             <div id="top">
                 {% if investment_list %}
-                        {% for investment in investment_list %}
-                            <a class="btn btn-primary panel-title"
-                                data-bs-toggle="collapse"
-                                href="#{{ investment.symbol }}"
-                                role="button"
-                                aria-expanded="false"
-                                aria-controls="collapseExample">
-                                <label class="-{{ investment.symbol }}">
-                                    {{ investment.symbol }} ({{ investment.name }})
-                                </label>
-                            </a>
-                            <div class="collapse" id={{ investment.symbol }}>
-                                <div class="card card-body" id="panel-container">
-                                    <div class="panel-body">
-                                        {% load static %}
-                                        <div >
-                                            <div id="inner-left">
-                                                {% load static %}
-                                                <img id="graph" src="{% static 'buffetiser_main/img/graph.png' %}">
-                                            </div>
-                                            <div id="inner-right">
-                                                <table id="inner-right-table">
-                                                    <tr><td>Average Cost</td><td>${{ investment.average_cost|stringformat:'.2f' }}</td></tr>
-                                                    <tr><td>Units Held</td><td>{{ investment.units_held|stringformat:'d' }}</td></tr>
-                                                    <tr><td>Total Cost</td><td>${{ investment.total_cost|stringformat:'.2f' }}</td></tr>
-                                                    <tr><td>Live Price</td><td>${{ investment.live_price }}</td></tr>
-                                                    <tr><td>Value</td><td>${{ investment.total_value|stringformat:'.2f' }}</td></tr>
-                                                    <tr><td>Profit</td><td class="-{{ investment.symbol }}">{{ investment.profit|stringformat:'.2f' }}</td></tr>
-                                                    <tr><td></td><td><label class="-{{ investment.symbol }}">{{ investment.percent_profit|stringformat:'.2f' }}%</label></td></tr>
-                                                </table>
-                                            </div>
+                    {% for investment in investment_list %}
+                        <a class="btn btn-primary panel-title"
+                            data-bs-toggle="collapse"
+                            href="#{{ investment.symbol }}"
+                            role="button"
+                            aria-expanded="false"
+                            aria-controls="collapseExample">
+                            <label class="-{{ investment.symbol }}">
+                                {{ investment.symbol }} ({{ investment.name }})
+                            </label>
+                        </a>
+                        <div class="collapse" id={{ investment.symbol }}>
+                            <div class="card card-body" id="panel-container">
+                                <div class="panel-body">
+                                    {% load static %}
+                                    <div >
+                                        <div id="top-inner-left">
+                                            {% load static %}
+                                            <img id="graph" src="{% static 'buffetiser_main/img/graph.png' %}">
+                                        </div>
+                                        <div id="top-inner-right">
+                                            <table class="summary-table">
+                                                <tr><td>Average Cost</td><td>${{ investment.average_cost|stringformat:'.2f' }}</td></tr>
+                                                <tr><td>Units Held</td><td>{{ investment.units_held|stringformat:'d' }}</td></tr>
+                                                <tr><td>Total Cost</td><td>${{ investment.total_cost|stringformat:'.2f' }}</td></tr>
+                                                <tr><td>Live Price</td><td>${{ investment.live_price }}</td></tr>
+                                                <tr><td>Value</td><td>${{ investment.total_value|stringformat:'.2f' }}</td></tr>
+                                                <tr><td>Profit</td><td class="-{{ investment.symbol }}">{{ investment.profit|stringformat:'.2f' }}</td></tr>
+                                                <tr><td></td><td><label class="-{{ investment.symbol }}">{{ investment.percent_profit|stringformat:'.2f' }}%</label></td></tr>
+                                            </table>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <!-- Script sets text color based on investment profit (positive/negative) -->
-                            <script>
-                                profit = Number(`{{ investment.profit }}`);
-                                if (profit === 0) { $(".-{{ investment.symbol }}").css("color", "white"); }
-                                else if (profit < 0) { $(".-{{ investment.symbol }}").css("color", "#FF5555"); }
-                                else if (profit > 0) { $(".-{{ investment.symbol }}").css("color", "#55FF55"); }
-                            </script>
-                        {% endfor %}
+                        </div>
+                        <!-- Script sets text color based on investment profit (positive/negative) -->
+                        <script>
+                            profit = Number(`{{ investment.profit }}`);
+                            if (profit === 0) { $(".-{{ investment.symbol }}").css("color", "white"); }
+                            else if (profit < 0) { $(".-{{ investment.symbol }}").css("color", "#FF7777"); }
+                            else if (profit > 0) { $(".-{{ investment.symbol }}").css("color", "#55FF55"); }
+                        </script>
+                    {% endfor %}
                 {% else %}
                     <p>No investments are available.</p>
                 {% endif %}
@@ -78,12 +78,23 @@
 
 
 
-        <div id="bottom">
-                bottom
+            <div id="bottom">
+                <div id="bottom-inner-left">
+                    {% load static %}
+                    <img id="graph" src="{% static 'buffetiser_main/img/summary.png' %}">
+                </div>
+                <div id="bottom-inner-right">
+                    <table class="summary-table">
+                        <tr><td>Cost</td><td>$58000</td></tr>
+                        <tr><td>Value</td><td>$70000</td></tr>
+                        <tr><td>Day</td><td>$100</td></tr>
+                        <tr><td>Profit</td><td>%18</td></tr>
+                        <tr><td>Profit</td><td>%18</td></tr>
+                    </table>
+                </div>
+            </div>
         </div>
 
-
-        </div>
 
 
 
