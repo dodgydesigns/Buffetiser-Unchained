@@ -3,6 +3,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from buffetiser_main.models import Purchase, Investment
 from .python.data_structures import Constants
 from .python.network import useBigCharts
+from .python.calculators import Calculators
 
 import logging
 
@@ -21,10 +22,20 @@ def main(request, investment_list=None):
     """
 
     """
+    investment_list = Investment.objects.order_by('symbol')  # [:5] #if investment_list else []
 
-    investment_list = Investment.objects.order_by('symbol')#[:5] #if investment_list else []
-
-    context = {'investment_list': investment_list}
+    # calculate totals
+    calculator = Calculators(investment_list)
+    totalCost = calculator.totalCost()
+    totalValue = calculator.totalValue()
+    # dayValue = calculator
+    totalProfit = calculator.totalProfit()
+    totalProfitPercent = calculator.totalProfitPercent()
+    context = {'investment_list': investment_list,
+               'total_cost': totalCost,
+               'total_value': totalValue,
+               'total_profit': totalProfit,
+               'total_profit_percent': totalProfitPercent}
     return render(request, 'buffetiser_main/index.html', context)
 
 
@@ -51,8 +62,6 @@ def newPurchase(request):
 
 def addPurchase(request):
 
-    logger.debug("addPurchase logging started")
-
     type = request.POST.get('type', '---')
     symbol = request.POST.get('symbol', '---')
     name = request.POST.get('name', '---')
@@ -65,10 +74,8 @@ def addPurchase(request):
     date = request.POST.get('date', '---')
 
     investment, investmentCreated = Investment.objects.get_or_create(symbol=symbol)
-    logger.debug("created={}".format(investmentCreated))
 
     if investmentCreated:
-        logger.debug("investment.save()")
         investment.investment_type = type
         investment.name = name
         investment.exchange = exchange
@@ -83,8 +90,7 @@ def addPurchase(request):
     investment.total_value = float((investment.units_held * investment.live_price))
     investment.profit = float((investment.total_value - investment.total_cost))
     investment.percent_profit += float((investment.profit / investment.total_cost) * 100)
-    logger.debug("form data: {} {} {} {}".format(units, price, fee, date))
-    logger.debug("inv  data: {} {} {} {}".format(investment.units_held, investment.average_cost, investment.total_fees, date))
+
     purchase = Purchase(units=units,
                         price=price,
                         fee=fee,
@@ -93,7 +99,6 @@ def addPurchase(request):
     investment.save()
     purchase.save()
 
-    logger.debug("purchase.save()")
-    # response = "Added purchase:  %s %s %s %s %s %s %s %s %s %s"
-    # return HttpResponse(response % (type, symbol, name, exchange, platform, currency, units, price, fee, date))
+    logger.debug("Added purchase:  %s %s %s %s %s %s %s %s %s %s".format(type, symbol, name, exchange,
+                                                                         platform, currency, units, price, fee, date))
     return redirect('/')

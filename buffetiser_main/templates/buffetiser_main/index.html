@@ -75,9 +75,6 @@
                     <p>No investments are available.</p>
                 {% endif %}
             </div>
-
-
-
             <div id="bottom">
                 <div id="bottom-inner-left">
                     {% load static %}
@@ -85,26 +82,27 @@
                 </div>
                 <div id="bottom-inner-right">
                     <table class="summary-table">
-                        <tr><td>Cost</td><td>$58000</td></tr>
-                        <tr><td>Value</td><td>$70000</td></tr>
+                        <tr><td>Cost</td><td>${{ total_cost }}</td></tr>
+                        <tr><td>Value</td><td>${{ total_value }}</td></tr>
                         <tr><td>Day</td><td>$100</td></tr>
-                        <tr><td>Profit</td><td>%18</td></tr>
-                        <tr><td>Profit</td><td>%18</td></tr>
+                        <tr><td>Profit</td><td class="totals">${{ total_profit|stringformat:'.2f' }}</td></tr>
+                        <tr><td></td><td class="totals">{{ total_profit_percent|stringformat:'.2f' }}%</td></tr>
                     </table>
                 </div>
+                <!-- Script sets text color based on investment profit (positive/negative) -->
+                <script>
+                    profit = Number(`{{ total_profit }}`);
+                    if (profit === 0) {
+                        $(".totals").css("color", "white");
+                    }
+                    else if (profit < 0) {
+                        $(".totals").css("color", "#FF7777");
+                    }
+                    else if (profit > 0) {
+                        $(".totals").css("color", "#55FF55");
+                    }
+                </script>
             </div>
         </div>
-
-
-
-
-
-
-
-
-
-
-
-
     </body>
 </html>
