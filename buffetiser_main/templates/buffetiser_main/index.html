@@ -16,7 +16,7 @@
     <body>
         <div id="left">
             {% load static %}
-            <img id="graph" src="{% static 'buffetiser_main/img/icon.png' %}">
+            <img id="icon" src="{% static 'buffetiser_main/img/icon.png' %}">
             <a href="/admin"><button class="w3-btn w3-round">Admin</button></a>
             <a href="/help"><button class="w3-btn w3-round">Help</button></a>
             <a href="/config"><button class="w3-btn w3-round">Config</button></a>
@@ -35,8 +35,14 @@
                             role="button"
                             aria-expanded="false"
                             aria-controls="collapseExample">
-                            <label class="-{{ investment.symbol }}">
+                            <label style="float: left">
                                 {{ investment.symbol }} ({{ investment.name }})
+                            </label>
+                            <label style="text-align: left; width: 150px; float: right; padding-right: 30px" class="profit_colour_{{ investment.symbol }}">
+                                P&L%: {{ investment.percent_profit|stringformat:'.2f' }}%
+                            </label>
+                            <label style="text-align: left; width: 150px; float: right; padding-right: 30px" class="profit_colour_{{ investment.symbol }}">
+                                Day: ${{ investment.profit|stringformat:'.2f' }}
                             </label>
                         </a>
                         <div class="collapse" id={{ investment.symbol }}>
@@ -46,7 +52,7 @@
                                     <div >
                                         <div id="top-inner-left">
                                             {% load static %}
-                                            <img id="graph" src="{% static 'buffetiser_main/img/graph.png' %}">
+                                            <img class="graph" src="{% static 'buffetiser_main/img/graph.png' %}">
                                         </div>
                                         <div id="top-inner-right">
                                             <table class="summary-table">
@@ -55,20 +61,32 @@
                                                 <tr><td>Total Cost</td><td>${{ investment.total_cost|stringformat:'.2f' }}</td></tr>
                                                 <tr><td>Live Price</td><td>${{ investment.live_price }}</td></tr>
                                                 <tr><td>Value</td><td>${{ investment.total_value|stringformat:'.2f' }}</td></tr>
-                                                <tr><td>Profit</td><td class="-{{ investment.symbol }}">{{ investment.profit|stringformat:'.2f' }}</td></tr>
-                                                <tr><td></td><td><label class="-{{ investment.symbol }}">{{ investment.percent_profit|stringformat:'.2f' }}%</label></td></tr>
+                                                <tr><td>Profit</td><td><label class="profit_colour_{{ investment.symbol }} profit_text_{{ investment.symbol }}"></label></td></tr>
+                                                <tr><td>      </td><td><label class="profit_colour_{{ investment.symbol }}">{{ investment.percent_profit|stringformat:'.2f' }}%</label></td></tr>
                                             </table>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <!-- Script sets text color based on investment profit (positive/negative) -->
+                        <!-- Script sets text color and text based on investment profit (positive/negative) -->
                         <script>
                             profit = Number(`{{ investment.profit }}`);
-                            if (profit === 0) { $(".-{{ investment.symbol }}").css("color", "white"); }
-                            else if (profit < 0) { $(".-{{ investment.symbol }}").css("color", "#FF7777"); }
-                            else if (profit > 0) { $(".-{{ investment.symbol }}").css("color", "#55FF55"); }
+                            if (profit === 0) {
+                                $(".profit_colour_{{ investment.symbol }}").css("color", "white");
+                                profitText = "$" + Math.abs(Number(profit.toFixed(2)));
+                                $(".profit_text_{{ investment.symbol }}").text(profitText);
+                            }
+                            else if (profit < 0) {
+                                $(".profit_colour_{{ investment.symbol }}").css("color", "#FF7777");
+                                profitText = "-$" + Math.abs(Number(profit.toFixed(2)));
+                                $(".profit_text_{{ investment.symbol }}").text(profitText);
+                            }
+                            else {
+                                $(".profit_colour_{{ investment.symbol }}").css("color", "#55FF55");
+                                profitText = "$" + Math.abs(Number(profit.toFixed(2)));
+                                $(".profit_text_{{ investment.symbol }}").text(profitText);
+                            }
                         </script>
                     {% endfor %}
                 {% else %}
@@ -78,7 +96,7 @@
             <div id="bottom">
                 <div id="bottom-inner-left">
                     {% load static %}
-                    <img id="graph" src="{% static 'buffetiser_main/img/summary.png' %}">
+                    <img class="graph" src="{% static 'buffetiser_main/img/summary.png' %}">
                 </div>
                 <div id="bottom-inner-right">
                     <table class="summary-table">
