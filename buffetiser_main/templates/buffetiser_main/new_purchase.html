@@ -8,6 +8,7 @@
     <script src="{% static 'buffetiser_main/bootstrap-5.0.2/js/bootstrap.js' %}"></script>
     <script src="{% static 'buffetiser_main/jquery-3.6.0.js' %}"></script>
     <script src="{% static 'buffetiser_main/scripts.js' %}"></script>
+
 <html lang="en">
     <head>
         <meta charset="UTF-8">
@@ -22,8 +23,31 @@
                 <form class="w3-container" action="add_purchase" method="post">
                 {% csrf_token %}
                 <fieldset>
+                    <label>From Existing Investment</label>
+                    <select class="w3-select" id="previous">
+                        <option value="" disabled selected>Choose your option</option>
+                        {% for investment in investment_list %}
+                            <option value={{ investment.symbol }}>{{ investment.name }} ({{ investment.symbol }})</option>
+                        {% endfor %}
+                    </select>
+                    <script>
+                        // This automatically fills in information about a held investment to save time.
+                        $('select').on('change', function() {
+                            {% for investment in investment_list %}
+                                if ($("#previous").val() == `{{ investment.symbol }}`) {
+                                    $("#type").val(`{{ investment.investment_type }}`).change()
+                                    $("#symbol").val(`{{ investment.symbol }}`)
+                                    $("#name").val(`{{ investment.name }}`)
+                                    $("#exchange").val(`{{ investment.exchange }}`).change();
+                                    $("#platform").val(`{{ investment.platform }}`).change();
+                                    $("#currency").val(`{{ investment.currency }}`).change();
+                                }
+                            {% endfor %}
+                        });
+                    </script>
+                    <hr>
                     <label>Type</label>
-                    <select class="w3-select" name="type">
+                    <select class="w3-select" name="type" id="type">
                       <option value="" disabled selected>Choose your option</option>
                         {% for t in constants.InvestmentType.choices %}
                             <option id="type" name="type" value={{ t.0 }}>{{ t.1 }}</option>
@@ -32,21 +56,21 @@
                     <label>Symbol</label><input type="text" class="w3-input" id="symbol" name="symbol" required>
                     <label>Name</label><input type="text" class="w3-input" id="name" name="name" required>
                     <label>Exchange</label>
-                    <select class="w3-select" name="exchange">
+                    <select class="w3-select" name="exchange" id="exchange">
                       <option value="" disabled selected>Choose your option</option>
                         {% for t in constants.Exchanges.choices %}
                             <option id="exchange" name="exchange" value={{ t.0 }}>{{ t.1 }}</option>
                         {% endfor %}
                     </select>
                     <label>Platform</label>
-                    <select class="w3-select" name="platform">
+                    <select class="w3-select" name="platform" id="platform">
                       <option value="" disabled selected>Choose your option</option>
                         {% for t in constants.Platforms.choices %}
                             <option id="platform" name="platform" value={{ t.0 }}>{{ t.1 }}</option>
                         {% endfor %}
                     </select>
                     <label>Currency</label>
-                    <select class="w3-select" name="currency">
+                    <select class="w3-select" name="currency" id="currency">
                       <option value="" disabled selected>Choose your option</option>
                         {% for t in constants.Currencies.choices %}
                             <option id="currency" name="currency" value={{ t.0 }}>{{ t.1 }}</option>

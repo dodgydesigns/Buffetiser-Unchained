@@ -57,7 +57,10 @@ def investmentDetails(request, symbol):
 def newPurchase(request):
     logger.debug("newPurchase logging started")
     constants = Constants()
-    return render(request, 'buffetiser_main/new_purchase.html', {'constants': constants})
+    investment_list = Investment.objects.all()
+    context = {'constants': constants,
+               'investment_list': investment_list}
+    return render(request, 'buffetiser_main/new_purchase.html', context)
 
 
 def addPurchase(request):
