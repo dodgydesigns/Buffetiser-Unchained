@@ -24,6 +24,12 @@ def main(request, investment_list=None):
     """
     investment_list = Investment.objects.order_by('symbol')  # [:5] #if investment_list else []
 
+    # Update the day values for each investment
+    # TODO: this should only happen once a day to stop us from hammering the service provider
+    for investment in investment_list:
+        useBigCharts(investment.symbol)
+        logger.debug(investment.history_set)
+
     # calculate totals
     calculator = Calculators(investment_list)
     totalCost = calculator.totalCost()
@@ -89,7 +95,7 @@ def addPurchase(request):
     investment.total_fees += float(fee)
     investment.total_cost += float((units * price) + fee)
     investment.average_cost = float(investment.total_cost / investment.units_held)
-    investment.live_price = float(useBigCharts(symbol).get("close"))
+    investment.live_price = float(useBigCharts(symbol).close)
     investment.total_value = float((investment.units_held * investment.live_price))
     investment.profit = float((investment.total_value - investment.total_cost))
     investment.percent_profit += float((investment.profit / investment.total_cost) * 100)
