@@ -16,7 +16,7 @@ logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 
 
-def useBigCharts(symbol):
+def useBigCharts(investment):
     """
     Uses ASX data from BigCharts (MarketWatch) to propagate portfolio with share data.
     There is no official API so data is scraped from their website. Not sure if this breaks terms of use.
@@ -26,7 +26,7 @@ def useBigCharts(symbol):
     todayString = '{}-{}-{}'.format(today.year, today.month, today.strftime("%d"))
 
     url = 'https://bigcharts.marketwatch.com/quotes/multi.asp?view=q&msymb=' + \
-          'au:{}+'.format(symbol)
+          'au:{}+'.format(investment.symbol)
     page = requests.get(url)
     soup = BeautifulSoup(page.content, 'html.parser')
 
@@ -41,12 +41,7 @@ def useBigCharts(symbol):
                             low=float(low),
                             close=float(lastPrice),
                             adjustedClose=float(lastPrice),
-                            volume=int(volume.replace(',', '')))
-
-    historyObject.save()
-    investment = Investment.objects.get(symbol=symbol)
-    investment.history_set.add(historyObject)
-    investment.save()
-    logger.debug(investment.history_set)
+                            volume=int(volume.replace(',', '')),
+                            investment=investment)
 
     return historyObject

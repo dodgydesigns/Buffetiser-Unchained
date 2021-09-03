@@ -27,14 +27,15 @@ def main(request, investment_list=None):
     # Update the day values for each investment
     # TODO: this should only happen once a day to stop us from hammering the service provider
     for investment in investment_list:
-        useBigCharts(investment.symbol)
-        logger.debug(investment.history_set)
+        historyObject = useBigCharts(investment)
+        # historyObject,
+        investment.live_price = float(historyObject.close)
+        historyObject.save()
 
     # calculate totals
     calculator = Calculators(investment_list)
     totalCost = calculator.totalCost()
     totalValue = calculator.totalValue()
-    # dayValue = calculator
     totalProfit = calculator.totalProfit()
     totalProfitPercent = calculator.totalProfitPercent()
     context = {'investment_list': investment_list,
@@ -95,7 +96,6 @@ def addPurchase(request):
     investment.total_fees += float(fee)
     investment.total_cost += float((units * price) + fee)
     investment.average_cost = float(investment.total_cost / investment.units_held)
-    investment.live_price = float(useBigCharts(symbol).close)
     investment.total_value = float((investment.units_held * investment.live_price))
     investment.profit = float((investment.total_value - investment.total_cost))
     investment.percent_profit += float((investment.profit / investment.total_cost) * 100)
@@ -105,8 +105,14 @@ def addPurchase(request):
                         fee=fee,
                         date=date,
                         investment=investment)
+
+    historyObject = useBigCharts(investment)
+    investment.live_price = float(historyObject.close)
+    historyObject.save(investment=investment)
+
     investment.save()
     purchase.save()
+    historyObject.save()
 
     logger.debug("Added purchase:  %s %s %s %s %s %s %s %s %s %s".format(type, symbol, name, exchange,
                                                                          platform, currency, units, price, fee, date))
