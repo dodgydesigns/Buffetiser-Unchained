@@ -1,3 +1,14 @@
+import logging
+
+# Create and configure logger
+logging.basicConfig(filename="debug.log",
+                    # format='%(asctime)s %(message)s',
+                    format='---------Calculators---------%(message)s',
+                    filemode='w')
+# Creating an object
+logger = logging.getLogger()
+# Setting the threshold of logger to DEBUG
+logger.setLevel(logging.DEBUG)
 
 
 class Calculators:
@@ -16,6 +27,7 @@ class Calculators:
         totalValue = 0
         for investment in self.investmentList:
             totalValue += investment.units_held * investment.live_price
+            logger.debug(investment.units_held, investment.live_price)
         return totalValue
 
     def dayValue(self):

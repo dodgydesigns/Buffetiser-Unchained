@@ -3,12 +3,12 @@ from datetime import datetime
 import requests
 from bs4 import BeautifulSoup
 
-from buffetiser_main.models import History, Investment
+from buffetiser_main.models import History
 
 # Create and configure logger
 logging.basicConfig(filename="debug.log",
                     # format='%(asctime)s %(message)s',
-                    format='------------------%(message)s',
+                    format='--------useBigCharts----------%(message)s',
                     filemode='w')
 # Creating an object
 logger = logging.getLogger()
@@ -20,13 +20,14 @@ def useBigCharts(investment):
     """
     Uses ASX data from BigCharts (MarketWatch) to propagate portfolio with share data.
     There is no official API so data is scraped from their website. Not sure if this breaks terms of use.
-    :param symbol: The investment to fetch data for.
+    :param investment: The investment to fetch data for.
     """
     today = datetime.today()
     todayString = '{}-{}-{}'.format(today.year, today.month, today.strftime("%d"))
 
     url = 'https://bigcharts.marketwatch.com/quotes/multi.asp?view=q&msymb=' + \
           'au:{}+'.format(investment.symbol)
+    logger.debug("URL: ", url)
     page = requests.get(url)
     soup = BeautifulSoup(page.content, 'html.parser')
 
@@ -35,13 +36,19 @@ def useBigCharts(investment):
     low = soup.find('td', {'class': 'low-col'}).text
     volume = soup.find('td', {'class': 'volume-col'}).text
 
-    historyObject = History(date=todayString,
-                            open=float(low),
-                            high=float(high),
-                            low=float(low),
-                            close=float(lastPrice),
-                            adjustedClose=float(lastPrice),
-                            volume=int(volume.replace(',', '')),
-                            investment=investment)
+    logger.debug('Start History')
+    try:
+        historyObject = History(date=todayString,
+                                open=float(low),
+                                high=float(high),
+                                low=float(low),
+                                close=float(lastPrice),
+                                adjustedClose=float(lastPrice),
+                                volume=int(volume.replace(',', '')),
+                                investment=investment)
+        logger.debug("$$$$$$$$$$$$$$$$$$$$$", float(lastPrice))
+    except Exception as e:
+        logger.debug("ERRRRRRORRRRRR:", e)
+    logger.debug('End History')
 
     return historyObject

@@ -10,7 +10,7 @@ import logging
 # Create and configure logger
 logging.basicConfig(filename="debug.log",
                     # format='%(asctime)s %(message)s',
-                    format='------------------%(message)s',
+                    format='----------Views--------%(message)s',
                     filemode='w')
 # Creating an object
 logger = logging.getLogger()
@@ -26,16 +26,17 @@ def main(request, investment_list=None):
 
     # Update the day values for each investment
     # TODO: this should only happen once a day to stop us from hammering the service provider
-    for investment in investment_list:
-        historyObject = useBigCharts(investment)
-        # historyObject,
-        investment.live_price = float(historyObject.close)
-        historyObject.save()
+    # for investment in investment_list:
+    #     historyObject = useBigCharts(investment)
+    #     # historyObject,
+    #     investment.live_price = float(historyObject.close)
+    #     historyObject.save()
 
     # calculate totals
     calculator = Calculators(investment_list)
     totalCost = calculator.totalCost()
     totalValue = calculator.totalValue()
+    logger.debug("totalValue", totalValue)
     totalProfit = calculator.totalProfit()
     totalProfitPercent = calculator.totalProfitPercent()
     context = {'investment_list': investment_list,

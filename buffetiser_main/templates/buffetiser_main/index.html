@@ -36,7 +36,7 @@
                             aria-expanded="false"
                             aria-controls="collapseExample">
                             <label style="float: left">
-                                {{ investment.symbol }} ({{ investment.name }})
+                                {{ investment.name }} ({{ investment.symbol }})
                             </label>
                             <label style="text-align: left; width: 150px; float: right; padding-right: 30px" class="profit_colour_{{ investment.symbol }}">
                                 P&L%: {{ investment.percent_profit|stringformat:'.2f' }}%
