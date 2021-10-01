@@ -100,16 +100,16 @@
                 </div>
                 <div id="bottom-inner-right">
                     <table class="summary-table">
-                        <tr><td>Cost</td><td>${{ total_cost }}</td></tr>
-                        <tr><td>Value</td><td>${{ total_value }}</td></tr>
+                        <tr><td>Cost</td><td>${{ bottom_line_cost }}</td></tr>
+                        <tr><td>Value</td><td>${{ bottom_line_value }}</td></tr>
                         <tr><td>Day</td><td>$100</td></tr>
-                        <tr><td>Profit</td><td class="totals">${{ total_profit|stringformat:'.2f' }}</td></tr>
-                        <tr><td></td><td class="totals">{{ total_profit_percent|stringformat:'.2f' }}%</td></tr>
+                        <tr><td>Profit</td><td class="totals">${{ bottom_line_profit|stringformat:'.2f' }}</td></tr>
+                        <tr><td></td><td class="totals">{{ bottom_line_profit_percent|stringformat:'.2f' }}%</td></tr>
                     </table>
                 </div>
                 <!-- Script sets text color based on investment profit (positive/negative) -->
                 <script>
-                    profit = Number(`{{ total_profit }}`);
+                    profit = Number(`{{ bottom_line_profit }}`);
                     if (profit === 0) {
                         $(".totals").css("color", "white");
                     }

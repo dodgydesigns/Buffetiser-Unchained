@@ -33,6 +33,15 @@ def main(request):
     bottomLineValue = calculator.bottomLineValue()
     bottomLineProfit = calculator.bottomLineProfit()
     bottomLineProfitPercent = calculator.bottomLineProfitPercent()
+
+    logger.debug("************************bottomLineCost "+str(bottomLineCost))
+    logger.debug("************************bottomLineValue " + str(bottomLineValue))
+    logger.debug("************************bottomLineProfit " + str(bottomLineProfit))
+    logger.debug("************************bottomLineProfitPercent " + str(bottomLineProfitPercent))
+
+
+
+
     context = {'investment_list': investment_list,
                'bottom_line_cost': bottomLineCost,
                'bottom_line_value': bottomLineValue,

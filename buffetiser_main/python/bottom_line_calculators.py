@@ -12,6 +12,9 @@ logger.setLevel(logging.DEBUG)
 
 
 class BottomLineCalculators:
+    """
+    Get the total portfolio values.
+    """
     def __init__(self, investmentList):
         self.investmentList = investmentList
 
@@ -33,7 +36,6 @@ class BottomLineCalculators:
         pass
 
     def bottomLineProfit(self):
-        profit = self.bottomLineValue() - self.bottomLineCost()
         return self.bottomLineValue() - self.bottomLineCost()
 
     def bottomLineProfitPercent(self):
