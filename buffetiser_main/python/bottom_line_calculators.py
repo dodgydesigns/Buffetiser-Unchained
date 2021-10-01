@@ -3,7 +3,7 @@ import logging
 # Create and configure logger
 logging.basicConfig(filename="debug.log",
                     # format='%(asctime)s %(message)s',
-                    format='---------Calculators---------%(message)s',
+                    format='---------BottomLineCalculators---------%(message)s',
                     filemode='w')
 # Creating an object
 logger = logging.getLogger()
@@ -11,11 +11,11 @@ logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 
 
-class Calculators:
+class BottomLineCalculators:
     def __init__(self, investmentList):
         self.investmentList = investmentList
 
-    def totalCost(self):
+    def bottomLineCost(self):
         totalCost = 0
         for investment in self.investmentList:
             for purchase in investment.purchase_set.all():
@@ -23,22 +23,22 @@ class Calculators:
                 totalCost += purchase.fee
         return totalCost
 
-    def totalValue(self):
+    def bottomLineValue(self):
         totalValue = 0
         for investment in self.investmentList:
-            totalValue += investment.units_held * investment.live_price
-            logger.debug(investment.units_held, investment.live_price)
+            totalValue += investment.unitsHeld * investment.livePrice
         return totalValue
 
     def dayValue(self):
         pass
 
-    def totalProfit(self):
-        return self.totalValue() - self.totalCost()
+    def bottomLineProfit(self):
+        profit = self.bottomLineValue() - self.bottomLineCost()
+        return self.bottomLineValue() - self.bottomLineCost()
 
-    def totalProfitPercent(self):
-        if self.totalCost() > 0:
-            return ((self.totalValue() - self.totalCost()) / self.totalCost()) * 100
+    def bottomLineProfitPercent(self):
+        if self.bottomLineCost() > 0:
+            return (self.bottomLineProfit() / self.bottomLineCost()) * 100
         else:
-            return 0
+            return 100
 

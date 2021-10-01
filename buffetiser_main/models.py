@@ -25,14 +25,14 @@ class Investment(models.Model):
                                 max_length=255,
                                 default=Constants.Platforms.CMC)
 
-    units_held = models.FloatField(default=0)               # float so it can handle shares (int) and crypto (float)
-    total_fees = models.FloatField(default=0)               # should only really be dollars/cents.
-    average_cost = models.FloatField(default=0)             #
-    total_cost = models.FloatField(default=0)               # can be any float
-    live_price = models.FloatField(default=0)
-    total_value = models.FloatField(default=0)
+    unitsHeld = models.FloatField(default=0)               # float so it can handle shares (int) and crypto (float)
+    totalFees = models.FloatField(default=0)               # should only really be dollars/cents.
+    averageCost = models.FloatField(default=0)
+    totalCost = models.FloatField(default=0)
+    livePrice = models.FloatField(default=0)
+    totalValue = models.FloatField(default=0)
     profit = models.FloatField(default=0)
-    percent_profit = models.FloatField(default=0)
+    percentProfit = models.FloatField(default=0)
 
 
 class Purchase(models.Model):

@@ -1,9 +1,13 @@
+from datetime import datetime
+
+from django.db.models import QuerySet
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
-from buffetiser_main.models import Purchase, Investment
+from buffetiser_main.models import Purchase, Investment, History
 from .python.data_structures import Constants
+from .python.individual_investment_calculators import IndividualInvestmentCalculators
 from .python.network import useBigCharts
-from .python.calculators import Calculators
+from .python.bottom_line_calculators import BottomLineCalculators
 
 import logging
 
@@ -18,32 +22,23 @@ logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 
 
-def main(request, investment_list=None):
+def main(request):
     """
 
     """
     investment_list = Investment.objects.order_by('symbol')  # [:5] #if investment_list else []
-
-    # Update the day values for each investment
-    # TODO: this should only happen once a day to stop us from hammering the service provider
-    # for investment in investment_list:
-    #     historyObject = useBigCharts(investment)
-    #     # historyObject,
-    #     investment.live_price = float(historyObject.close)
-    #     historyObject.save()
-
-    # calculate totals
-    calculator = Calculators(investment_list)
-    totalCost = calculator.totalCost()
-    totalValue = calculator.totalValue()
-    logger.debug("totalValue", totalValue)
-    totalProfit = calculator.totalProfit()
-    totalProfitPercent = calculator.totalProfitPercent()
+    # calculate totals for all investments
+    calculator = BottomLineCalculators(investment_list)
+    bottomLineCost = calculator.bottomLineCost()
+    bottomLineValue = calculator.bottomLineValue()
+    bottomLineProfit = calculator.bottomLineProfit()
+    bottomLineProfitPercent = calculator.bottomLineProfitPercent()
     context = {'investment_list': investment_list,
-               'total_cost': totalCost,
-               'total_value': totalValue,
-               'total_profit': totalProfit,
-               'total_profit_percent': totalProfitPercent}
+               'bottom_line_cost': bottomLineCost,
+               'bottom_line_value': bottomLineValue,
+               'bottom_line_profit': bottomLineProfit,
+               'bottom_line_profit_percent': bottomLineProfitPercent}
+
     return render(request, 'buffetiser_main/index.html', context)
 
 
@@ -52,7 +47,7 @@ def config(request):
     return HttpResponse(text)
 
 
-def help(request):
+def buffetiserHelp(request):
     text = "<h1>Buffetiser Unchained Help!</h1>"
     return HttpResponse(text)
 
@@ -63,9 +58,8 @@ def investmentDetails(request, symbol):
 
 
 def newPurchase(request):
-    logger.debug("newPurchase logging started")
     constants = Constants()
-    investment_list = Investment.objects.all()
+    investment_list = [Investment.objects.all()]
     context = {'constants': constants,
                'investment_list': investment_list}
     return render(request, 'buffetiser_main/new_purchase.html', context)
@@ -73,7 +67,10 @@ def newPurchase(request):
 
 def addPurchase(request):
 
-    type = request.POST.get('type', '---')
+    today = datetime.today()
+    todayString = '{}-{}-{}'.format(today.year, today.month, today.strftime("%d"))
+
+    investment_type = request.POST.get('type', '---')
     symbol = request.POST.get('symbol', '---')
     name = request.POST.get('name', '---')
     exchange = request.POST.get('exchange', '---')
@@ -87,19 +84,19 @@ def addPurchase(request):
     investment, investmentCreated = Investment.objects.get_or_create(symbol=symbol)
 
     if investmentCreated:
-        investment.investment_type = type
+        investment.investment_type = investment_type
         investment.name = name
         investment.exchange = exchange
         investment.platform = platform
         investment.currency = currency
 
-    investment.units_held += int(units)
-    investment.total_fees += float(fee)
-    investment.total_cost += float((units * price) + fee)
-    investment.average_cost = float(investment.total_cost / investment.units_held)
-    investment.total_value = float((investment.units_held * investment.live_price))
-    investment.profit = float((investment.total_value - investment.total_cost))
-    investment.percent_profit += float((investment.profit / investment.total_cost) * 100)
+    investment.unitsHeld += int(units)
+    investment.totalFees += float(fee)
+    investment.totalCost += float((units * price) + fee)
+    investment.averageCost = float(investment.totalCost / investment.unitsHeld)
+    investment.totalValue = float((investment.unitsHeld * investment.livePrice))
+    investment.profit = float((investment.totalValue - investment.totalCost))
+    investment.percentProfit += float((investment.profit / investment.totalCost) * 100)
 
     purchase = Purchase(units=units,
                         price=price,
@@ -107,14 +104,61 @@ def addPurchase(request):
                         date=date,
                         investment=investment)
 
-    historyObject = useBigCharts(investment)
-    investment.live_price = float(historyObject.close)
-    historyObject.save(investment=investment)
+    getInvestmentData('useBigCharts', investment, todayString)
 
     investment.save()
     purchase.save()
+
+    return redirect('/')
+
+
+def updateLivePrices(request):
+    """
+    Update the day values for each investment
+    """
+    # TODO: this should only happen once a day to stop us from hammering the service provider
+    today = datetime.today()
+    todayString = '{}-{}-{}'.format(today.year, today.month, today.strftime("%d"))
+
+    for investment in Investment.objects.all():
+        getInvestmentData('useBigCharts', investment, todayString)
+
+    return redirect('/')
+
+
+def getInvestmentData(service, investment, todayString):
+    """
+
+    """
+    if service == 'useBigCharts':
+        investmentData = useBigCharts(investment.symbol, todayString)
+
+    historyObject = History(date=investmentData.get('date'),
+                            open=investmentData.get('open'),
+                            high=investmentData.get('high'),
+                            low=investmentData.get('low'),
+                            close=investmentData.get('close'),
+                            adjustedClose=investmentData.get('adjustedClose'),
+                            volume=investmentData.get('volume'),
+                            investment=investment)
+
     historyObject.save()
 
-    logger.debug("Added purchase:  %s %s %s %s %s %s %s %s %s %s".format(type, symbol, name, exchange,
-                                                                         platform, currency, units, price, fee, date))
-    return redirect('/')
+    # TODO: does this have to be done???
+    investment.livePrice = investmentData.get('close')
+    calculator = IndividualInvestmentCalculators(investment)
+    calculator.assignDayValue()
+    calculator.assignTotalCost()
+    calculator.assignTotalValue()
+    calculator.assignTotalProfit()
+    calculator.assignTotalProfitPercent()
+
+    # unitsHeld = models.FloatField(default=0)               # float so it can handle shares (int) and crypto (float)
+    # totalFees = models.FloatField(default=0)               # should only really be dollars/cents.
+    # averageCost = models.FloatField(default=0)
+
+    logger.debug(investment.totalCost)
+    logger.debug(investment.totalValue)
+    logger.debug(investment.totalFees)
+    logger.debug(investment.percentProfit)
+    investment.save()
