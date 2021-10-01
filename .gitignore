@@ -1,5 +1,4 @@
-
-*.pyc
+*.pyc 
 /.idea/.gitignore
 /.idea/Buffetiser_Unchained.iml
 /.idea/dataSources.local.xml
@@ -10,3 +9,4 @@
 /.idea/misc.xml
 /.idea/modules.xml
 /.idea/vcs.xml
+./buffetiser_main/__pycache_/*

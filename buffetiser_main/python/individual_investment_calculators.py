@@ -3,7 +3,7 @@ import logging
 # Create and configure logger
 logging.basicConfig(filename="debug.log",
                     # format='%(asctime)s %(message)s',
-                    format='---------BottomLineCalculators---------%(message)s',
+                    format='---------IndividualInvestmentCalculators---------%(message)s',
                     filemode='w')
 # Creating an object
 logger = logging.getLogger()
@@ -23,11 +23,7 @@ class IndividualInvestmentCalculators:
         self.investment.totalCost = totalCost
 
     def assignTotalValue(self):
-        totalValue = 0
         self.investment.totalValue = self.investment.unitsHeld * self.investment.livePrice
-        logger.debug("held " + str(self.investment.unitsHeld) + " " + str(self.investment.livePrice) + " " +
-                     str(self.investment.totalValue))
-        return totalValue
 
     def assignDayValue(self):
         pass

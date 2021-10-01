@@ -66,10 +66,13 @@ def newPurchase(request):
 
 
 def addPurchase(request):
-
+    """
+    Add a new record of an investment purchase.
+    """
     today = datetime.today()
     todayString = '{}-{}-{}'.format(today.year, today.month, today.strftime("%d"))
 
+    # Pull data entered into Purchase form
     investment_type = request.POST.get('type', '---')
     symbol = request.POST.get('symbol', '---')
     name = request.POST.get('name', '---')
@@ -81,8 +84,10 @@ def addPurchase(request):
     fee = float(request.POST.get('fee', '---'))
     date = request.POST.get('date', '---')
 
+    # If the investment (symbol) already exists, append additional data. Otherwise, create a new Investment.
     investment, investmentCreated = Investment.objects.get_or_create(symbol=symbol)
 
+    # If it's a new Investment, start adding basic data.
     if investmentCreated:
         investment.investment_type = investment_type
         investment.name = name
@@ -90,13 +95,28 @@ def addPurchase(request):
         investment.platform = platform
         investment.currency = currency
 
-    investment.unitsHeld += int(units)
-    investment.totalFees += float(fee)
-    investment.totalCost += float((units * price) + fee)
-    investment.averageCost = float(investment.totalCost / investment.unitsHeld)
-    investment.totalValue = float((investment.unitsHeld * investment.livePrice))
-    investment.profit = float((investment.totalValue - investment.totalCost))
-    investment.percentProfit += float((investment.profit / investment.totalCost) * 100)
+    # If it's new or existing Investment, add details of the new Purchase.
+    unitsHeld = int(units) + investment.unitsHeld
+    totalFees = float(fee) + investment.totalFees
+    totalCost = float((unitsHeld * price) + totalFees) + investment.totalCost
+    averageCost = float(totalCost / unitsHeld)
+
+    # Now we need the live price so we can calculate the final fields.
+    getInvestmentData('useBigCharts', investment, todayString)
+
+    totalValue = float((unitsHeld * investment.livePrice))
+    profit = float((totalValue - totalCost))
+    percentProfit = float((profit / totalCost) * 100)
+
+    # Add all the new data to the Investment object and save to DB.
+    investment.unitsHeld = unitsHeld
+    investment.totalFees = totalFees
+    investment.totalCost = totalCost
+    investment.averageCost = averageCost
+    investment.totalValue = totalValue
+    investment.profit = profit
+    investment.percentProfit = percentProfit
+    investment.save()
 
     purchase = Purchase(units=units,
                         price=price,
@@ -104,9 +124,6 @@ def addPurchase(request):
                         date=date,
                         investment=investment)
 
-    getInvestmentData('useBigCharts', investment, todayString)
-
-    investment.save()
     purchase.save()
 
     return redirect('/')
@@ -153,12 +170,4 @@ def getInvestmentData(service, investment, todayString):
     calculator.assignTotalProfit()
     calculator.assignTotalProfitPercent()
 
-    # unitsHeld = models.FloatField(default=0)               # float so it can handle shares (int) and crypto (float)
-    # totalFees = models.FloatField(default=0)               # should only really be dollars/cents.
-    # averageCost = models.FloatField(default=0)
-
-    logger.debug(investment.totalCost)
-    logger.debug(investment.totalValue)
-    logger.debug(investment.totalFees)
-    logger.debug(investment.percentProfit)
     investment.save()

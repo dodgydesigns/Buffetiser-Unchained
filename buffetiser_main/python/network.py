@@ -27,7 +27,6 @@ def useBigCharts(symbol, todayString):
           'au:{}+'.format(symbol)
     page = requests.get(url)
     soup = BeautifulSoup(page.content, 'html.parser')
-    logger.debug('----', page.text)
     lastPrice = soup.find('td', {'class': 'last-col'}).text
     high = soup.find('td', {'class': 'high-col'}).text
     low = soup.find('td', {'class': 'low-col'}).text
