@@ -25,14 +25,15 @@ class Investment(models.Model):
                                 max_length=255,
                                 default=Constants.Platforms.CMC)
 
-    unitsHeld = models.FloatField(default=0)               # float so it can handle shares (int) and crypto (float)
-    totalFees = models.FloatField(default=0)               # should only really be dollars/cents.
+    unitsHeld = models.FloatField(default=0)                            # can handle shares (int) and crypto (float)
+    totalFees = models.FloatField(default=0)                            # should only really be dollars/cents.
     averageCost = models.FloatField(default=0)
     totalCost = models.FloatField(default=0)
     livePrice = models.FloatField(default=0)
     totalValue = models.FloatField(default=0)
     profit = models.FloatField(default=0)
     percentProfit = models.FloatField(default=0)
+    plotPath = models.CharField(max_length=512, default='./')      # hold the path of the last history plot.
 
 
 class Purchase(models.Model):

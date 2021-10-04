@@ -1,6 +1,5 @@
 from datetime import datetime
 
-from django.db.models import QuerySet
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from buffetiser_main.models import Purchase, Investment, History
@@ -12,6 +11,8 @@ from .python.bottom_line_calculators import BottomLineCalculators
 import logging
 
 # Create and configure logger
+from .python.plots import plotPriceHistory
+
 logging.basicConfig(filename="debug.log",
                     # format='%(asctime)s %(message)s',
                     format='----------Views--------%(message)s',
@@ -33,14 +34,6 @@ def main(request):
     bottomLineValue = calculator.bottomLineValue()
     bottomLineProfit = calculator.bottomLineProfit()
     bottomLineProfitPercent = calculator.bottomLineProfitPercent()
-
-    logger.debug("************************bottomLineCost "+str(bottomLineCost))
-    logger.debug("************************bottomLineValue " + str(bottomLineValue))
-    logger.debug("************************bottomLineProfit " + str(bottomLineProfit))
-    logger.debug("************************bottomLineProfitPercent " + str(bottomLineProfitPercent))
-
-
-
 
     context = {'investment_list': investment_list,
                'bottom_line_cost': bottomLineCost,
@@ -178,5 +171,8 @@ def getInvestmentData(service, investment, todayString):
     calculator.assignTotalValue()
     calculator.assignTotalProfit()
     calculator.assignTotalProfitPercent()
+
+    # add plot path
+    investment.plotPath = plotPriceHistory(investment)
 
     investment.save()
