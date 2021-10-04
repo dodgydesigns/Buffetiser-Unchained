@@ -10,5 +10,6 @@ urlpatterns = [
     path('purchase', views.newPurchase, name='New Purchase'),
     path('add_purchase', views.addPurchase, name='Add Purchase'),
     path('config', views.config, name='Buffetiser Config'),
-    path('help', views.help, name='Buffetiser Help'),
+    path('live', views.updateLivePrices, name='Live Prices'),
+    path('buffetiserHelp', views.buffetiserHelp, name='Buffetiser Help'),
 ]

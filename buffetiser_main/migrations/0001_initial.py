@@ -21,9 +21,9 @@ class Migration(migrations.Migration):
                 ('currency', models.CharField(default='AUD', max_length=5)),
                 ('exchange', models.CharField(choices=[('XAMS', 'XAMS'), ('XASX', 'XASX'), ('XBOM', 'XBOM'), ('XBRU', 'XBRU'), ('XFRA', 'XFRA'), ('XHKG', 'XHKG'), ('XJPX', 'XJPX'), ('XKOS', 'XKOS'), ('XLIS', 'XLIS'), ('XLON', 'XLON'), ('XMIL', 'XMIL'), ('XMSM', 'XMSM'), ('XNAS', 'XNAS'), ('XNSE', 'XNSE'), ('XNYS', 'XNYS'), ('XOSL', 'XOSL'), ('XSAU', 'XSAU'), ('XSHE', 'XSHE'), ('XSHG', 'XSHG'), ('XSWX', 'XSWX'), ('XTAI', 'XTAI'), ('XTSE', 'XTSE')], default='XASX', max_length=4)),
                 ('platform', models.CharField(choices=[('CMC', 'CMC'), ('LINK', 'LINK'), ('BOARDROOM', 'BOARDROOM')], default='CMC', max_length=255)),
-                ('units_held', models.FloatField(default=0)),
-                ('total_cost', models.FloatField(default=0)),
-                ('total_fees', models.FloatField(default=0)),
+                ('unitsHeld', models.FloatField(default=0)),
+                ('bottomLineCost', models.FloatField(default=0)),
+                ('totalFees', models.FloatField(default=0)),
             ],
         ),
         migrations.CreateModel(

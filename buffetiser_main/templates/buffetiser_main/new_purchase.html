@@ -26,9 +26,11 @@
                     <label>From Existing Investment</label>
                     <select class="w3-select" id="previous">
                         <option value="" disabled selected>Choose your option</option>
-                        {% for investment in investment_list %}
-                            <option value={{ investment.symbol }}>{{ investment.name }} ({{ investment.symbol }})</option>
-                        {% endfor %}
+                        {% if investment_list %}
+                            {% for investment in investment_list %}
+                                <option value={{ investment.symbol }}>{{ investment.name }} ({{ investment.symbol }})</option>
+                            {% endfor %}
+                        {%  endif %}
                     </select>
                     <script>
                         // This automatically fills in information about a held investment to save time.

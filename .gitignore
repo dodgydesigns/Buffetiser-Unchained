@@ -1,2 +1,12 @@
-
-*.pyc
+*.pyc 
+/.idea/.gitignore
+/.idea/Buffetiser_Unchained.iml
+/.idea/dataSources.local.xml
+/.idea/dataSources.xml
+/.idea/inspectionProfiles/Project_Default.xml
+/.idea/inspectionProfiles/profiles_settings.xml
+/.idea/jsLibraryMappings.xml
+/.idea/misc.xml
+/.idea/modules.xml
+/.idea/vcs.xml
+./buffetiser_main/__pycache_/*

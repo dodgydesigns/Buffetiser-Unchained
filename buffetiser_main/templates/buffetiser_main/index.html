@@ -20,7 +20,7 @@
             <a href="/admin"><button class="w3-btn w3-round">Admin</button></a>
             <a href="/help"><button class="w3-btn w3-round">Help</button></a>
             <a href="/config"><button class="w3-btn w3-round">Config</button></a>
-            <a href="/config"><button class="w3-btn w3-round">Live</button></a>
+            <a href="/live"><button class="w3-btn w3-round">Live</button></a>
             <a href="/purchase"><button class="w3-btn w3-round">Purchase</button></a>
             <a href="/config"><button class="w3-btn w3-round">Sale</button></a>
             <a href="/config"><button class="w3-btn w3-round">Quit</button></a>
@@ -36,10 +36,10 @@
                             aria-expanded="false"
                             aria-controls="collapseExample">
                             <label style="float: left">
-                                {{ investment.symbol }} ({{ investment.name }})
+                                {{ investment.name }} ({{ investment.symbol }})
                             </label>
                             <label style="text-align: left; width: 150px; float: right; padding-right: 30px" class="profit_colour_{{ investment.symbol }}">
-                                P&L%: {{ investment.percent_profit|stringformat:'.2f' }}%
+                                P&L%: {{ investment.percentProfit|stringformat:'.2f' }}%
                             </label>
                             <label style="text-align: left; width: 150px; float: right; padding-right: 30px" class="profit_colour_{{ investment.symbol }}">
                                 Day: ${{ investment.profit|stringformat:'.2f' }}
@@ -52,17 +52,17 @@
                                     <div >
                                         <div id="top-inner-left">
                                             {% load static %}
-                                            <img class="graph" src="{% static 'buffetiser_main/img/graph.png' %}">
+                                            <img class="graph" src="{% static investment.plotPath %}">
                                         </div>
                                         <div id="top-inner-right">
                                             <table class="summary-table">
-                                                <tr><td>Average Cost</td><td>${{ investment.average_cost|stringformat:'.2f' }}</td></tr>
-                                                <tr><td>Units Held</td><td>{{ investment.units_held|stringformat:'d' }}</td></tr>
-                                                <tr><td>Total Cost</td><td>${{ investment.total_cost|stringformat:'.2f' }}</td></tr>
-                                                <tr><td>Live Price</td><td>${{ investment.live_price }}</td></tr>
-                                                <tr><td>Value</td><td>${{ investment.total_value|stringformat:'.2f' }}</td></tr>
+                                                <tr><td>Average Cost</td><td>${{ investment.averageCost|stringformat:'.2f' }}</td></tr>
+                                                <tr><td>Units Held</td><td>{{ investment.unitsHeld|stringformat:'d' }}</td></tr>
+                                                <tr><td>Total Cost</td><td>${{ investment.totalCost|stringformat:'.2f' }}</td></tr>
+                                                <tr><td>Live Price</td><td>${{ investment.livePrice }}</td></tr>
+                                                <tr><td>Value</td><td>${{ investment.totalValue|stringformat:'.2f' }}</td></tr>
                                                 <tr><td>Profit</td><td><label class="profit_colour_{{ investment.symbol }} profit_text_{{ investment.symbol }}"></label></td></tr>
-                                                <tr><td>      </td><td><label class="profit_colour_{{ investment.symbol }}">{{ investment.percent_profit|stringformat:'.2f' }}%</label></td></tr>
+                                                <tr><td>      </td><td><label class="profit_colour_{{ investment.symbol }}">{{ investment.percentProfit|stringformat:'.2f' }}%</label></td></tr>
                                             </table>
                                         </div>
                                     </div>
@@ -100,16 +100,16 @@
                 </div>
                 <div id="bottom-inner-right">
                     <table class="summary-table">
-                        <tr><td>Cost</td><td>${{ total_cost }}</td></tr>
-                        <tr><td>Value</td><td>${{ total_value }}</td></tr>
+                        <tr><td>Cost</td><td>${{ bottom_line_cost }}</td></tr>
+                        <tr><td>Value</td><td>${{ bottom_line_value }}</td></tr>
                         <tr><td>Day</td><td>$100</td></tr>
-                        <tr><td>Profit</td><td class="totals">${{ total_profit|stringformat:'.2f' }}</td></tr>
-                        <tr><td></td><td class="totals">{{ total_profit_percent|stringformat:'.2f' }}%</td></tr>
+                        <tr><td>Profit</td><td class="totals">${{ bottom_line_profit|stringformat:'.2f' }}</td></tr>
+                        <tr><td></td><td class="totals">{{ bottom_line_profit_percent|stringformat:'.2f' }}%</td></tr>
                     </table>
                 </div>
                 <!-- Script sets text color based on investment profit (positive/negative) -->
                 <script>
-                    profit = Number(`{{ total_profit }}`);
+                    profit = Number(`{{ bottom_line_profit }}`);
                     if (profit === 0) {
                         $(".totals").css("color", "white");
                     }

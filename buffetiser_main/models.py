@@ -1,3 +1,5 @@
+from sqlite3 import Date
+
 from django.db import models
 
 from buffetiser_main.python.data_structures import Constants
@@ -23,14 +25,15 @@ class Investment(models.Model):
                                 max_length=255,
                                 default=Constants.Platforms.CMC)
 
-    units_held = models.FloatField(default=0)               # float so it can handle shares (int) and crypto (float)
-    total_fees = models.FloatField(default=0)               # should only really be dollars/cents.
-    average_cost = models.FloatField(default=0)             #
-    total_cost = models.FloatField(default=0)               # can be any float
-    live_price = models.FloatField(default=0)
-    total_value = models.FloatField(default=0)
+    unitsHeld = models.FloatField(default=0)                            # can handle shares (int) and crypto (float)
+    totalFees = models.FloatField(default=0)                            # should only really be dollars/cents.
+    averageCost = models.FloatField(default=0)
+    totalCost = models.FloatField(default=0)
+    livePrice = models.FloatField(default=0)
+    totalValue = models.FloatField(default=0)
     profit = models.FloatField(default=0)
-    percent_profit = models.FloatField(default=0)
+    percentProfit = models.FloatField(default=0)
+    plotPath = models.CharField(max_length=512, default='./')      # hold the path of the last history plot.
 
 
 class Purchase(models.Model):
@@ -59,10 +62,12 @@ class Sale(models.Model):
 class History(models.Model):
     """
     """
-    date = models.DateField()
-    open = models.FloatField()
-    high = models.FloatField()
-    low = models.FloatField()
-    close = models.FloatField()
+    date = models.DateField(Date.today())
+    open = models.FloatField(default=0)
+    high = models.FloatField(default=0)
+    low = models.FloatField(default=0)
+    close = models.FloatField(default=0)
+    adjustedClose = models.FloatField(default=0)
+    volume = models.IntegerField(default=0)
 
     investment = models.ForeignKey(to=Investment, on_delete=models.CASCADE)
