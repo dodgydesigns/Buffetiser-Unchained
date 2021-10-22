@@ -10,6 +10,8 @@ from .python.bottom_line_calculators import BottomLineCalculators
 
 import logging
 
+# I added this line
+
 # Create and configure logger
 from .python.plots import plotPriceHistory
 
